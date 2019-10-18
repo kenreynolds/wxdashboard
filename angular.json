@@ -43,7 +43,7 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
+              "sourceMap": true,
               "extractCss": true,
               "namedChunks": false,
               "aot": true,
@@ -57,13 +57,21 @@
                   "maximumError": "5mb"
                 }
               ]
+            },
+            "serve": {
+              "sourceMap": {
+                "scripts": true,
+                "styles": true,
+                "vendor": true
+              },
+              "extractCss": true
             }
           }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "wxdashboard:build"
+            "browserTarget": "wxdashboard:build:serve"
           },
           "configurations": {
             "production": {
