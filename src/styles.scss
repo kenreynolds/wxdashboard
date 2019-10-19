@@ -1,3 +1,7 @@
 @import './assets/scss/components';
 
+// Custom Angular component styles
+@import './assets/scss/components/header';
+@import './assets/scss/components/sidebar';
+
 @include foundation-everything;

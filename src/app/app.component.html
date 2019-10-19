@@ -1,5 +1,12 @@
 <app-header></app-header>
 
-<main class="grid-container">
-  <router-outlet></router-outlet>
+<main>
+  <mat-sidenav-container>
+    <mat-sidenav mode="side" opened
+      [fixedInViewport]="true"
+      [fixedTopGap]="64">
+      <app-sidebar></app-sidebar>
+    </mat-sidenav>
+    <router-outlet></router-outlet>
+  </mat-sidenav-container>
 </main>
