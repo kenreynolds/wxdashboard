@@ -1,0 +1,13 @@
+.calendar-panel,
+.chart-panel,
+.graph-panel,
+.messages-panel,
+.personal-panel {
+  background-color: #999999;
+  height: 300px;
+}
+
+.graph-panel,
+.personal-panel {
+  margin-bottom: 16px;
+}
