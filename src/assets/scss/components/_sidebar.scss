@@ -16,7 +16,10 @@
 .menu {
   li {
     a {
+      color: #3F51B5;
+
       &:hover {
+        color: #1A237E;
         cursor: pointer;
       }
     }

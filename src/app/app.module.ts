@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import {
+  MatCardModule,
   MatSidenavModule,
   MatToolbarModule
 } from '@angular/material';
@@ -27,6 +28,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
+    MatCardModule,
     MatSidenavModule,
     MatToolbarModule
   ],

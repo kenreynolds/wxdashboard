@@ -1,13 +1,9 @@
-.calendar-panel,
-.chart-panel,
-.graph-panel,
-.messages-panel,
-.personal-panel {
-  background-color: #999999;
+.mat-card {
+  color: #616161;
   height: 300px;
-}
 
-.graph-panel,
-.personal-panel {
-  margin-bottom: 16px;
+  &.graph,
+  &.weather {
+    margin-bottom: 16px;
+  }
 }
