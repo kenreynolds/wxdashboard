@@ -1,0 +1,62 @@
+.current-weather,
+.mat-card-subtitle {
+  color: #283593;
+}
+
+.current-weather {
+  display: flex;
+  flex-direction: column;
+
+  > .mat-card-content {
+    display: flex;
+  }
+
+  > .mat-card-title {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .conditions-icon {
+    align-items: flex-start;
+    display: flex;
+    justify-content: flex-start;
+    padding-left: .25rem;
+    padding-top: 1.75rem;
+
+    > .wi-night-alt-cloudy-windy {
+      font-size: 4rem;
+    }
+  }
+
+  .feels-like {
+    font-size: 1rem;
+    margin-top: -1.5rem;
+  }
+
+  .observation-time {
+    font-size: 1rem;
+  }
+
+  .other-obs {
+    align-items: flex-end;
+    display: flex;
+    flex-direction: column;
+    padding-top: 1.4rem;
+
+    &.data {
+      align-items: center;
+      font-weight: bold;
+      padding-left: .75rem;
+    }
+  }
+
+  .temperature {
+    font-size: 4rem;
+    margin-bottom: 0;
+  }
+
+  .wi-direction-down-right {
+    font-size: 1.25rem;
+  }
+}

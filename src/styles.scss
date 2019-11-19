@@ -1,8 +1,15 @@
 @import './assets/scss/components';
 
+@include foundation-everything;
+
+// Weather icons
+@import '../node_modules/weather-icons-npm/css/weather-icons.min.css';
+@import '../node_modules/weather-icons-npm/css/weather-icons-wind.min.css';
+
 // Custom Angular component styles
 @import './assets/scss/components/header';
 @import './assets/scss/components/sidebar';
 @import './assets/scss/components/dashboard';
+@import './assets/scss/components/current-weather';
 
-@include foundation-everything;
+@import './assets/scss/helpers';

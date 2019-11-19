@@ -15,13 +15,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { CurrentWeatherComponent } from './current-weather/current-weather.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     DashboardComponent,
-    SidebarComponent
+    SidebarComponent,
+    CurrentWeatherComponent
   ],
   imports: [
     BrowserModule,
