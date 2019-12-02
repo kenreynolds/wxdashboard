@@ -1,10 +1,13 @@
-<div class="current-weather">
+<mat-spinner *ngIf="isLoading" diameter="50"></mat-spinner>
+<div class="current-weather"
+  [ngClass]="showIsLoading()">
   <mat-card-title>
     Current Weather
-    <span class="observation-time">12:35 PM</span>
+    <span class="observation-time">{{ observationTime }}</span>
   </mat-card-title>
   <mat-card-subtitle>
-    Grand Prairie, Texas
+    {{ locationName }}, {{ state }}
+    <a class="card-link" href="#">Select another city</a>
   </mat-card-subtitle>
   <mat-card-content class="grid-x">
     <div class="cell medium-3 conditions-icon">
@@ -13,10 +16,15 @@
 
     <div class="cell medium-5">
       <p class="temperature">
-        43<i class="wi wi-fahrenheit"></i>
+        {{ currentTemperature }}<i class="wi wi-fahrenheit"></i>
       </p>
-      <p class="feels-like">
-        Feels like: 38<i class="wi wi-degrees"></i>
+      <p class="wind-chill"
+        *ngIf="currentWindChill !== null">
+        Wind chill: {{ currentWindChill }}<i class="wi wi-degrees"></i>
+      </p>
+      <p class="wind-chill"
+        *ngIf="currentWindChill === null">
+        No wind chill
       </p>
     </div>
 
@@ -28,12 +36,13 @@
     </div>
 
     <div class="cell medium-2 other-obs data">
-      <p>87%</p>
-      <p>1029mb</p>
+      <p>{{ currentHumidity }}</p>
+      <p>{{ currentPressure }}</p>
       <p>
-        <i class="wi wi-direction-down-right"></i> 9 MPH
+        <!-- <i class="wi wi-direction-down-right"></i> -->
+        {{ currentWindSpeed }}
       </p>
-      <p>10 miles</p>
+      <p>{{ currentVisibility }}</p>
     </div>
   </mat-card-content>
 </div>

@@ -1,8 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import {
   MatCardModule,
+  MatProgressSpinnerModule,
   MatSidenavModule,
   MatToolbarModule
 } from '@angular/material';
@@ -30,7 +32,9 @@ import { CurrentWeatherComponent } from './current-weather/current-weather.compo
     AppRoutingModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
+    HttpClientModule,
     MatCardModule,
+    MatProgressSpinnerModule,
     MatSidenavModule,
     MatToolbarModule
   ],

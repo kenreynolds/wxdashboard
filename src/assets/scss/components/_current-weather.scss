@@ -11,10 +11,27 @@
     display: flex;
   }
 
+  > .mat-card-subtitle {
+    display: flex;
+    justify-content: space-between;
+  }
+
   > .mat-card-title {
     align-items: center;
     display: flex;
     justify-content: space-between;
+  }
+
+  &.loading {
+    background-color: white;
+    height: 300px;
+    opacity: .05;
+  }
+
+  .card-link {
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   .conditions-icon {
@@ -29,7 +46,7 @@
     }
   }
 
-  .feels-like {
+  .wind-chill {
     font-size: 1rem;
     margin-top: -1.5rem;
   }
@@ -59,4 +76,10 @@
   .wi-direction-down-right {
     font-size: 1.25rem;
   }
+}
+
+.mat-progress-spinner {
+  position: absolute !important;
+  right: 45%;
+  top: 40%;
 }
