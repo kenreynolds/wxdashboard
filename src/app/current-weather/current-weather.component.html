@@ -1,6 +1,7 @@
 <mat-spinner *ngIf="isLoading" diameter="50"></mat-spinner>
 <div class="current-weather"
-  [ngClass]="showIsLoading()">
+  [ngClass]="showIsLoading()"
+  *ngIf="hasWxData">
   <mat-card-title>
     Current Weather
     <span class="observation-time">{{ observationTime }}</span>
@@ -45,4 +46,8 @@
       <p>{{ currentVisibility }}</p>
     </div>
   </mat-card-content>
+</div>
+<div class="current-weather"
+  *ngIf="!hasWxData">
+  <p>Weather data is currently unavailable</p>
 </div>
