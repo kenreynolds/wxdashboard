@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { CurrentWeatherService } from '../core/services/current-weather.service';
 import * as moment from 'moment';
+
+import { CurrentWeatherService } from '../core/services/current-weather.service';
+import * as weatherUtils from '../utils/weather-utils';
 
 @Component({
   selector: 'app-current-weather',
   templateUrl: './current-weather.component.html'
 })
 export class CurrentWeatherComponent implements OnInit {
+  isLoading = false;
   wxForecast: any = [];
   wxLocations: any = [];
-  isLoading = false;
   currentWindChill: number;
   currentHumidity: string;
   currentPressure: string;
@@ -22,7 +24,9 @@ export class CurrentWeatherComponent implements OnInit {
   observationTime: string;
   state: string;
 
-  constructor(private currentWeatherService: CurrentWeatherService) { }
+  constructor(
+    private currentWeatherService: CurrentWeatherService
+  ) { }
 
   ngOnInit() {
     this.isLoading = true;
@@ -31,10 +35,23 @@ export class CurrentWeatherComponent implements OnInit {
     this.getIsDaytime();
   }
 
+  getIsDaytime(): void {
+    const currentHour = new Date().getHours();
+
+    if (currentHour >= 1 && currentHour < 7) {
+      this.isDaytime = false;
+    } else if (currentHour > 7 && currentHour < 19) {
+      this.isDaytime = true;
+    } else if (currentHour > 19 && currentHour <= 24) {
+      this.isDaytime = false;
+    }
+  }
+
   getWxForecastLocation(): void {
     this.currentWeatherService
       .getWxLocation()
       .subscribe(wxLocationsData => {
+        this.isLoading = false;
         this.wxLocations = wxLocationsData;
         const baseLocationUrl = this.wxLocations.properties.relativeLocation.properties;
 
@@ -55,14 +72,14 @@ export class CurrentWeatherComponent implements OnInit {
           if (baseObservationsUrl.windChill.value === null) {
             this.currentWindChill = null;
           } else {
-            this.currentWindChill = Math.floor(this.convertCelsiusToFahrenheit(baseObservationsUrl.windChill.value));
+            this.currentWindChill = Math.floor(weatherUtils.convertCelsiusToFahrenheit(baseObservationsUrl.windChill.value));
           }
 
           this.currentHumidity = `${Math.floor(baseObservationsUrl.relativeHumidity.value)}%`;
-          this.currentPressure = `${Math.floor(this.convertPascalsToMillibar(baseObservationsUrl.barometricPressure.value))}mb`;
-          this.currentTemperature = Math.floor(this.convertCelsiusToFahrenheit(baseObservationsUrl.temperature.value));
-          this.currentVisibility = `${Math.floor(this.convertMetersToMiles(baseObservationsUrl.visibility.value))} miles`;
-          this.currentWindSpeed = `${Math.floor(this.convertMetersPerSecondToMilePerHour(baseObservationsUrl.windSpeed.value))} MPH`;
+          this.currentPressure = `${Math.floor(weatherUtils.convertPascalsToMillibar(baseObservationsUrl.barometricPressure.value))}mb`;
+          this.currentTemperature = Math.floor(weatherUtils.convertCelsiusToFahrenheit(baseObservationsUrl.temperature.value));
+          this.currentVisibility = `${Math.floor(weatherUtils.convertMetersToMiles(baseObservationsUrl.visibility.value))} miles`;
+          this.currentWindSpeed = `${Math.floor(weatherUtils.convertMetersPerSecondToMilePerHour(baseObservationsUrl.windSpeed.value))} MPH`;
           this.observationTime = moment.utc(baseObservationsUrl.timestamp).local().format('LT');
         }
       });
@@ -73,34 +90,6 @@ export class CurrentWeatherComponent implements OnInit {
       return {
         loading: true
       };
-    }
-  }
-
-  private convertCelsiusToFahrenheit(temp: number) {
-    return temp * 1.8 + 32;
-  }
-
-  private convertMetersPerSecondToMilePerHour(speed: number) {
-    return speed * 2.236936;
-  }
-
-  private convertMetersToMiles(distance: number) {
-    return distance * 0.00062137;
-  }
-
-  private convertPascalsToMillibar(pressure: number) {
-    return pressure / 100;
-  }
-
-  private getIsDaytime(): void {
-    const currentHour = new Date().getHours();
-
-    if (currentHour >= 1 && currentHour < 7) {
-      this.isDaytime = false;
-    } else if (currentHour > 7 && currentHour < 19) {
-      this.isDaytime = true;
-    } else if (currentHour > 19 && currentHour <= 24) {
-      this.isDaytime = false;
     }
   }
 }
