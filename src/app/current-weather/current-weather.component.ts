@@ -1,27 +1,34 @@
 import { Component, OnInit } from '@angular/core';
 
-import { CurrentWeatherService } from '../core/services/current-weather.service';
-
 import * as moment from 'moment';
 import * as weatherUtils from '../utils/weather-utils';
+
+import { CurrentWeatherService } from '../core/services/current-weather.service';
 
 @Component({
   selector: 'app-current-weather',
   templateUrl: './current-weather.component.html'
 })
 export class CurrentWeatherComponent implements OnInit {
+  /* TODO:
+   * Refactor verbiage, variable, and file names from Current Weather to Latest Observations
+   * Add code to show correct weather icon based on time of day and observed condition
+   * Add wind direction icon
+   * Add code to enable selection of another city
+   */
   isLoading = false;
-  wxForecast: any = [];
   wxLocations: any = [];
-  currentWindChill: string;
+  wxObservations: any = [];
+
   currentHumidity: string;
   currentPressure: string;
   currentTemperature: string;
   currentVisibility: string;
+  currentWindChill: string;
   currentWindSpeed: string;
+  forecastPeriod: string;
   hasWxData: boolean;
   isDaytime: boolean;
-  forecastPeriod: string;
   locationName: string;
   observationTime: string;
   state: string;
@@ -49,9 +56,9 @@ export class CurrentWeatherComponent implements OnInit {
 
   getWxForecastLocation(): void {
     this.currentWeatherService
-      .getWxLocation()
-      .subscribe(wxLocationsData => {
-        this.wxLocations = wxLocationsData;
+      .getWxLocationData()
+      .subscribe(wxLocationData => {
+        this.wxLocations = wxLocationData;
 
         if (this.wxLocations) {
           this.isLoading = false;
@@ -77,15 +84,15 @@ export class CurrentWeatherComponent implements OnInit {
 
   getWxObservations(): void {
     this.currentWeatherService
-      .getWxObservations()
+      .getWxObservationsData()
       .subscribe(wxObservationData => {
         if (this.locationName === 'Grand Prairie' && this.state === 'TX') {
-          this.wxForecast = wxObservationData;
+          this.wxObservations = wxObservationData;
 
-          if (this.wxForecast && !this.isLoading) {
+          if (this.wxObservations && !this.isLoading) {
             this.hasWxData = true;
             console.log('Weather data loaded.');
-            const baseObservationsUrl = this.wxForecast.properties;
+            const baseObservationsUrl = this.wxObservations.properties;
 
             if (baseObservationsUrl.windChill.value === null) {
               this.currentWindChill = null;

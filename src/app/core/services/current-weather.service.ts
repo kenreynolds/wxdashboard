@@ -7,12 +7,12 @@ import { HttpClient } from '@angular/common/http';
 export class CurrentWeatherService {
   constructor(private http: HttpClient) { }
 
-  getWxLocation() {
+  getWxLocationData() {
     return this.http
       .get('https://api.weather.gov/points/32.7454,-97.0035');
   }
 
-  getWxObservations() {
+  getWxObservationsData() {
     return this.http
       .get('https://api.weather.gov/stations/KGPM/observations/latest');
   }

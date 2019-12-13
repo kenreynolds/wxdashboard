@@ -1,0 +1,13 @@
+<div class="temp-graph" *ngIf="hasWxForecastData">
+  <canvas height="250" width="800"
+    baseChart
+    [chartType]="'line'"
+    [colors]="temperatureChartColors"
+    [datasets]="temperatureChartData"
+    [labels]="temperatureChartLabels"
+    [legend]="temperatureChartLegend"
+    [plugins]="temperatureChartPlugins">
+  </canvas>
+</div>
+
+<p *ngIf="!hasWxForecastData">Data currently unavailable</p>

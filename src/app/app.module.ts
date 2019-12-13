@@ -1,5 +1,6 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 
 import {
@@ -9,15 +10,16 @@ import {
   MatToolbarModule
 } from '@angular/material';
 
+import { ChartsModule } from 'ng2-charts';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { CurrentWeatherComponent } from './current-weather/current-weather.component';
+import { TemperatureGraphComponent } from './temperature-graph/temperature-graph.component';
 
 @NgModule({
   declarations: [
@@ -25,12 +27,14 @@ import { CurrentWeatherComponent } from './current-weather/current-weather.compo
     HeaderComponent,
     DashboardComponent,
     SidebarComponent,
-    CurrentWeatherComponent
+    CurrentWeatherComponent,
+    TemperatureGraphComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    ChartsModule,
     FontAwesomeModule,
     HttpClientModule,
     MatCardModule,
