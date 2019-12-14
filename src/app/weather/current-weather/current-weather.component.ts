@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 import * as moment from 'moment';
-import * as weatherUtils from '../utils/weather-utils';
+import * as weatherUtils from '../weather-utils';
 
-import { CurrentWeatherService } from '../core/services/current-weather.service';
+import { CurrentWeatherService } from './current-weather.service';
 
 @Component({
   selector: 'app-current-weather',

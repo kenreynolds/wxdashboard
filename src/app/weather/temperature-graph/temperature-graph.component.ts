@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChartDataSets } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
 
-import { ForecastWeatherService } from '../core/services/forecast-weather.service';
+import { ForecastWeatherService } from '../services/forecast-weather.service';
 
 @Component({
   selector: 'app-temperature-graph',

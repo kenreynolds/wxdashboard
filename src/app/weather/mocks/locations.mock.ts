@@ -1,4 +1,4 @@
-import { Locations } from '../core/interfaces/locations';
+import { Locations } from '../interfaces/locations';
 
 export const LOCATIONS: Array<Locations> = [
   {

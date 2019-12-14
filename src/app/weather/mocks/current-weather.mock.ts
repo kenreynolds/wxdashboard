@@ -1,4 +1,4 @@
-import { CurrentWeather } from '../core/interfaces/current-weather';
+import { CurrentWeather } from '../interfaces/current-weather';
 
 export const CURRENT_WEATHER: Array<CurrentWeather> = [
   {

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   MatCardModule,
   MatProgressSpinnerModule,
@@ -10,16 +10,13 @@ import {
   MatToolbarModule
 } from '@angular/material';
 
-import { ChartsModule } from 'ng2-charts';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { WeatherModule } from './weather/weather.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
-import { CurrentWeatherComponent } from './current-weather/current-weather.component';
-import { TemperatureGraphComponent } from './temperature-graph/temperature-graph.component';
+import { DashboardComponent } from './shared/layout/dashboard/dashboard.component';
+import { HeaderComponent } from './shared/layout/header/header.component';
+import { SidebarComponent } from './shared/layout/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -27,20 +24,17 @@ import { TemperatureGraphComponent } from './temperature-graph/temperature-graph
     HeaderComponent,
     DashboardComponent,
     SidebarComponent,
-    CurrentWeatherComponent,
-    TemperatureGraphComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    ChartsModule,
     FontAwesomeModule,
-    HttpClientModule,
     MatCardModule,
     MatProgressSpinnerModule,
     MatSidenavModule,
-    MatToolbarModule
+    MatToolbarModule,
+    WeatherModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
