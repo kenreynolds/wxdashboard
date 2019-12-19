@@ -1,3 +1,9 @@
 .temp-graph {
   display: block;
+
+  &.loading {
+    background-color: white;
+    height: 300px;
+    opacity: .05;
+  }
 }

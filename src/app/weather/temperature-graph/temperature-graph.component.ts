@@ -10,9 +10,7 @@ import { ForecastWeatherService } from '../services/forecast-weather.service';
   templateUrl: './temperature-graph.component.html'
 })
 export class TemperatureGraphComponent implements OnInit {
-  /* TODO:
-   * Add loader
-   */
+  isLoading: boolean;
   hasWxForecastData: boolean;
   temperatureChartColors: Color[] = [
     { backgroundColor: '', borderColor: '' },
@@ -30,6 +28,7 @@ export class TemperatureGraphComponent implements OnInit {
   constructor(private forecastWeatherService: ForecastWeatherService) { }
 
   ngOnInit() {
+    this.isLoading = true;
     this.getWxForecast();
   }
 
@@ -41,16 +40,37 @@ export class TemperatureGraphComponent implements OnInit {
         console.log('Forecast data loaded.');
 
         if (this.wxForecast) {
+          this.isLoading = false;
           this.hasWxForecastData = true;
-          const baseForecastUrl = this.wxForecast.properties;
+          const forecastPeriods = this.wxForecast.properties.periods;
+          forecastPeriods.splice(-1, 1);
 
-          baseForecastUrl.periods.filter(forecastPeriod => {
+          switch (forecastPeriods[0].name) {
+            case 'Overnight':
+            case 'This Afternoon':
+            case 'This Evening':
+            case 'This Morning':
+            case 'Tonight':
+              forecastPeriods.shift();
+            default:
+              break;
+          }
+
+          forecastPeriods.filter(forecastPeriod => {
             if (forecastPeriod.isDaytime) {
               this.temperatureChartColors[0].backgroundColor = 'rgba(233,30,99, 0.2)';
               this.temperatureChartColors[0].borderColor = 'rgba(233,30,99, 1)';
               this.temperatureChartData[0].data.push(forecastPeriod.temperature);
-              this.temperatureChartLabels.push(forecastPeriod.name.substring(0, 3));
               this.temperatureChartData[0].label = 'High Temp';
+
+              switch (forecastPeriod.name) {
+                case 'Christmas Day':
+                case 'Today':
+                  this.temperatureChartLabels.push(forecastPeriod.name);
+                  break;
+                default:
+                  this.temperatureChartLabels.push(forecastPeriod.name.substring(0, 3));
+              }
             } else {
               this.temperatureChartColors[1].backgroundColor = 'rgba(63,81,181, 0.2)';
               this.temperatureChartColors[1].borderColor = 'rgba(63,81,181, 1)';
@@ -59,8 +79,17 @@ export class TemperatureGraphComponent implements OnInit {
             }
           });
         } else {
+          this.isLoading = false;
           this.hasWxForecastData = false;
         }
       });
+  }
+
+  showIsLoading() {
+    if (this.isLoading) {
+      return {
+        loading: true
+      };
+    }
   }
 }

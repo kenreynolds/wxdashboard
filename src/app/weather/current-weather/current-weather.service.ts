@@ -5,6 +5,9 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class CurrentWeatherService {
+  /* TODO:
+   * Add error handling for HTTP calls
+   */
   constructor(private http: HttpClient) { }
 
   getWxLocationData() {

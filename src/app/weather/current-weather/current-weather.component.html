@@ -12,10 +12,10 @@
   </mat-card-subtitle>
   <mat-card-content class="grid-x">
     <div class="cell medium-3 conditions-icon">
-      <i class="wi wi-night-alt-cloudy-windy"></i>
+      <i class="wi" [ngClass]="showSkyConditionIcon()"></i>
     </div>
 
-    <div class="cell medium-5">
+    <div class="cell medium-4">
       <p class="temperature">
         {{ currentTemperature }}<i class="wi wi-fahrenheit"></i>
       </p>
@@ -40,7 +40,9 @@
       <p>{{ currentHumidity }}</p>
       <p>{{ currentPressure }}</p>
       <p>
-        <!-- <i class="wi wi-direction-down-right"></i> -->
+        <i class="wi"
+          [ngClass]="showWindDirectionIcon()">
+        </i>
         {{ currentWindSpeed }}
       </p>
       <p>{{ currentVisibility }}</p>

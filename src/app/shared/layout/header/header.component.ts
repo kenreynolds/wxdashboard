@@ -15,7 +15,7 @@ import {
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  animations: [
+  /* animations: [
     trigger('toggleMenu', [
       state('in', style({
         opacity: 1,
@@ -35,7 +35,7 @@ import {
         }))
       ])
     ])
-  ]
+  ] */
 })
 export class HeaderComponent implements OnInit {
   faAngleDown = faAngleDown;

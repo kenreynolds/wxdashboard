@@ -10,9 +10,9 @@ import {
   MatToolbarModule
 } from '@angular/material';
 
+import { AppRoutingModule } from './app-routing.module';
 import { WeatherModule } from './weather/weather.module';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './shared/layout/dashboard/dashboard.component';
 import { HeaderComponent } from './shared/layout/header/header.component';

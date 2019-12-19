@@ -1,4 +1,7 @@
-<div class="temp-graph" *ngIf="hasWxForecastData">
+<mat-spinner *ngIf="isLoading" diameter="50"></mat-spinner>
+<div class="temp-graph"
+  [ngClass]="showIsLoading()"
+  *ngIf="hasWxForecastData">
   <canvas height="250" width="800"
     baseChart
     [chartType]="'line'"
