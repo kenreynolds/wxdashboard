@@ -192,41 +192,45 @@ export class CurrentWeatherComponent implements OnInit {
   }
 
   showWindDirectionIcon() {
-    switch (this.currentWindDirection) {
-      case 'N':
-        return {
-          'wi-direction-down': true
-        };
-      case 'NE':
-        return {
-          'wi-direction-down-left': true
-        };
-      case 'E':
-        return {
-          'wi-direction-left': true
-        };
-      case 'SE':
-        return {
-          'wi-direction-up-left': true
-        };
-      case 'S':
-        return {
-          'wi-direction-up': true
-        };
-      case 'SW':
-        return {
-          'wi-direction-up-right': true
-        };
-      case 'W':
-        return {
-          'wi-direction-right': true
-        };
-      case 'NW':
-        return {
-          'wi-direction-down-right': true
-        };
-      default:
-        break;
+    if (this.currentWindSpeed === '0 mph') {
+      return;
+    } else {
+      switch (this.currentWindDirection) {
+        case 'N':
+          return {
+            'wi-direction-down': true
+          };
+        case 'NE':
+          return {
+            'wi-direction-down-left': true
+          };
+        case 'E':
+          return {
+            'wi-direction-left': true
+          };
+        case 'SE':
+          return {
+            'wi-direction-up-left': true
+          };
+        case 'S':
+          return {
+            'wi-direction-up': true
+          };
+        case 'SW':
+          return {
+            'wi-direction-up-right': true
+          };
+        case 'W':
+          return {
+            'wi-direction-right': true
+          };
+        case 'NW':
+          return {
+            'wi-direction-down-right': true
+          };
+        default:
+          break;
+      }
     }
   }
 }

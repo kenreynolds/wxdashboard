@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CurrentWeatherService {
   /* TODO:
+   * Add geolocation for location data lookup
    * Add error handling for HTTP calls
    */
   constructor(private http: HttpClient) { }
