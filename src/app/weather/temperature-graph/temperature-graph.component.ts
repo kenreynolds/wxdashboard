@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChartDataSets } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
 
-import { ForecastWeatherService } from '../services/forecast-weather.service';
+import { WeatherService } from '../services/weather.service';
 
 @Component({
   selector: 'app-temperature-graph',
@@ -26,7 +26,7 @@ export class TemperatureGraphComponent implements OnInit {
   temperatureChartPlugins = [];
   wxForecast: any = [];
 
-  constructor(private forecastWeatherService: ForecastWeatherService) { }
+  constructor(private weatherService: WeatherService) { }
 
   ngOnInit() {
     this.isLoading = true;
@@ -34,7 +34,7 @@ export class TemperatureGraphComponent implements OnInit {
   }
 
   getWxForecast(): void {
-    this.forecastWeatherService
+    this.weatherService
       .getWxForecastData()
       .subscribe(wxForecastData => {
         this.wxForecast = wxForecastData;

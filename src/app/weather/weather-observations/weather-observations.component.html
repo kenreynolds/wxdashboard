@@ -1,9 +1,9 @@
 <mat-spinner *ngIf="isLoading && !error" diameter="50"></mat-spinner>
-<div class="current-weather"
+<div class="weather-observations"
   [ngClass]="showIsLoading()"
   *ngIf="hasWxData">
   <mat-card-title>
-    Current Weather
+    Latest Observations
     <span class="observation-time">{{ observationTime }}</span>
   </mat-card-title>
   <mat-card-subtitle>
@@ -17,14 +17,14 @@
 
     <div class="cell medium-4">
       <p class="temperature">
-        {{ currentTemperature }}<i class="wi wi-fahrenheit"></i>
+        {{ observedTemperature }}<i class="wi wi-fahrenheit"></i>
       </p>
       <p class="wind-chill"
-        *ngIf="currentWindChill !== null">
-        Wind chill: {{ currentWindChill }}<i class="wi wi-degrees"></i>
+        *ngIf="observedWindChill !== null">
+        Wind chill: {{ observedWindChill }}<i class="wi wi-degrees"></i>
       </p>
       <p class="wind-chill"
-        *ngIf="currentWindChill === null">
+        *ngIf="observedWindChill === null">
         No wind chill
       </p>
     </div>
@@ -37,20 +37,20 @@
     </div>
 
     <div class="cell medium-2 other-obs data">
-      <p>{{ currentHumidity }}</p>
-      <p>{{ currentPressure }}</p>
+      <p>{{ observedHumidity }}</p>
+      <p>{{ observedPressure }}</p>
       <p>
         <i class="wi"
           [ngClass]="showWindDirectionIcon()">
         </i>
-        {{ currentWindSpeed }}
+        {{ observedWindSpeed }}
       </p>
-      <p>{{ currentVisibility }}</p>
+      <p>{{ observedVisibility }}</p>
     </div>
   </mat-card-content>
 </div>
 
-<div class="current-weather"
+<div class="weather-observations"
   *ngIf="!hasWxData && error">
   <div class="callout alert">
     <p>{{ error }}</p>

@@ -5,11 +5,12 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class CurrentWeatherService {
+export class WeatherService {
   /* TODO:
    * Add geolocation for location data lookup
    */
   private locationDataUrl = 'https://api.weather.gov/points/32.7454,-97.0035';
+  private forecastUrl = 'https://api.weather.gov/gridpoints/FWD/81,102/forecast';
   private observationsDataUrl = 'https://api.weather.gov/stations/KGPM/observations/latest';
 
   constructor(private http: HttpClient) { }
@@ -17,6 +18,11 @@ export class CurrentWeatherService {
   getWxLocationData(): Observable<any> {
     return this.http
       .get(this.locationDataUrl);
+  }
+
+  getWxForecastData(): Observable<any> {
+    return this.http
+      .get(this.forecastUrl);
   }
 
   getWxObservationsData(): Observable<any> {

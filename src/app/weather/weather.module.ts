@@ -11,13 +11,13 @@ import {
   MatToolbarModule
 } from '@angular/material';
 
-import { CurrentWeatherComponent } from './current-weather/current-weather.component';
+import { WeatherObservationsComponent } from './weather-observations/weather-observations.component';
 import { TemperatureGraphComponent } from './temperature-graph/temperature-graph.component';
 
 @NgModule({
   declarations: [
-    CurrentWeatherComponent,
     TemperatureGraphComponent,
+    WeatherObservationsComponent,
   ],
   imports: [
     CommonModule,
@@ -30,8 +30,8 @@ import { TemperatureGraphComponent } from './temperature-graph/temperature-graph
     MatToolbarModule,
   ],
   exports: [
-    CurrentWeatherComponent,
     TemperatureGraphComponent,
+    WeatherObservationsComponent,
   ]
 })
 export class WeatherModule {}
