@@ -10,6 +10,7 @@ import { ForecastWeatherService } from '../services/forecast-weather.service';
   templateUrl: './temperature-graph.component.html'
 })
 export class TemperatureGraphComponent implements OnInit {
+  error: string;
   isLoading: boolean;
   hasWxForecastData: boolean;
   temperatureChartColors: Color[] = [
@@ -40,10 +41,13 @@ export class TemperatureGraphComponent implements OnInit {
         console.log('Forecast data loaded.');
 
         if (this.wxForecast) {
-          this.isLoading = false;
           this.hasWxForecastData = true;
+          this.isLoading = false;
           const forecastPeriods = this.wxForecast.properties.periods;
-          forecastPeriods.splice(-1, 1);
+
+          if (forecastPeriods[13].isDaytime) {
+            forecastPeriods.splice(-1, 1);
+          }
 
           switch (forecastPeriods[0].name) {
             case 'Overnight':
@@ -79,9 +83,11 @@ export class TemperatureGraphComponent implements OnInit {
             }
           });
         } else {
-          this.isLoading = false;
           this.hasWxForecastData = false;
         }
+      }, error => {
+        console.log(error);
+        this.error = 'Temperature forecast data is currently unavailable.';
       });
   }
 

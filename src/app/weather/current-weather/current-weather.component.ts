@@ -12,8 +12,11 @@ import { CurrentWeatherService } from './current-weather.service';
 export class CurrentWeatherComponent implements OnInit {
   /* TODO:
    * Refactor verbiage, variable, and file names from Current Weather to Latest Observations
+   * Add heat index
+   * Add and configure NgRx store
    * Add code to enable selection of another city
    */
+  error: string;
   isLoading: boolean;
   wxLocations: any = [];
   wxObservations: any = [];
@@ -47,9 +50,9 @@ export class CurrentWeatherComponent implements OnInit {
 
     if (currentHour >= 1 && currentHour < 7) {
       this.isDaytime = false;
-    } else if (currentHour > 7 && currentHour < 19) {
+    } else if (currentHour > 7 && currentHour < 18) {
       this.isDaytime = true;
-    } else if (currentHour > 19 && currentHour <= 24) {
+    } else if (currentHour > 18 && currentHour <= 24) {
       this.isDaytime = false;
     }
   }
@@ -79,6 +82,9 @@ export class CurrentWeatherComponent implements OnInit {
           this.observationTime = '--';
           this.state = '--';
         }
+      }, error => {
+        console.log(error);
+        this.error = 'Latest observations are currently unavailable.';
       });
   }
 
@@ -131,9 +137,13 @@ export class CurrentWeatherComponent implements OnInit {
             }
           } else {
             this.hasWxData = false;
+            this.isLoading = false;
             console.log('No weather data to show.');
           }
         }
+      }, error => {
+        console.log(error);
+        this.error = 'Latest observations are currently unavailable.';
       });
   }
 
@@ -146,47 +156,57 @@ export class CurrentWeatherComponent implements OnInit {
   }
 
   showSkyConditionIcon() {
-    if (
-      this.currentSkyCondition === 'Clear' ||
-      this.currentSkyCondition === 'Mostly Clear' ||
-      this.currentSkyCondition === 'Sunny'
-    ) {
-      if (this.isDaytime) {
-        return {
-          'wi-day-sunny': true
-        };
-      } else {
-        return {
-          'wi-night-clear': true
-        };
+    if (this.isDaytime) {
+      switch (this.currentSkyCondition) {
+        case 'Clear':
+        case 'Mostly Clear':
+        case 'Sunny':
+          return {
+            'wi-day-sunny': true
+          };
+        case 'Partly Cloudy':
+        case 'Mostly Sunny':
+          return {
+            'wi-day-cloudy': true
+          };
+        case 'Mostly Cloudy':
+        case 'Partly Sunny':
+        case 'Cloudy':
+        case 'Overcast':
+          return {
+            'wi-day-sunny-overcast': true
+          };
+        case 'Fog':
+        case 'Fog/Mist':
+          return {
+            'wi-day-fog': true
+          };
       }
-    } else if (
-      this.currentSkyCondition === 'Partly Cloudy' ||
-      this.currentSkyCondition === 'Mostly Sunny'
-    ) {
-      if (this.isDaytime) {
-        return {
-          'wi-day-cloudy': true
-        };
-      } else {
-        return {
-          'wi-night-alt-partly-cloudy': true
-        };
-      }
-    } else if (
-      this.currentSkyCondition === 'Mostly Cloudy' ||
-      this.currentSkyCondition === 'Partly Sunny' ||
-      this.currentSkyCondition === 'Cloudy' ||
-      this.currentSkyCondition === 'Overcast'
-    ) {
-      if (this.isDaytime) {
-        return {
-          'wi-day-overcast': true
-        };
-      } else {
-        return {
-          'wi-night-alt-cloudy': true
-        };
+    } else {
+      switch (this.currentSkyCondition) {
+        case 'Clear':
+        case 'Mostly Clear':
+        case 'Sunny':
+          return {
+            'wi-night-clear': true
+          };
+        case 'Partly Cloudy':
+        case 'Mostly Sunny':
+          return {
+            'wi-night-alt-partly-cloudy': true
+          };
+        case 'Mostly Cloudy':
+        case 'Partly Sunny':
+        case 'Cloudy':
+        case 'Overcast':
+          return {
+            'wi-night-alt-cloudy': true
+          };
+        case 'Fog':
+        case 'Fog/Mist':
+          return {
+            'wi-night-fog': true
+          };
       }
     }
   }

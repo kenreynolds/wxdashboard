@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ForecastWeatherService {
-  /* TODO:
-   * Add error handling for HTTP calls
-   */
+  private forecastUrl = 'https://api.weather.gov/gridpoints/FWD/81,102/forecast';
+
   constructor(private http: HttpClient) { }
 
-  getWxForecastData() {
+  getWxForecastData(): Observable<any> {
     return this.http
-      .get('https://api.weather.gov/gridpoints/FWD/81,102/forecast');
+      .get(this.forecastUrl);
   }
 }

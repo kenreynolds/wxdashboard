@@ -7,6 +7,17 @@
   display: flex;
   flex-direction: column;
 
+  .temperature,
+  .wind-chill {
+    padding-left: 10px;
+  }
+
+  > .alert {
+    background-color: #F8BBD0;
+    border-radius: 2px;
+    color: #880E4F;
+  }
+
   > .mat-card-content {
     display: flex;
   }
@@ -40,13 +51,7 @@
     justify-content: center;
     padding-top: 1.75rem;
 
-    > .wi-day-cloudy,
-    > .wi-day-overcast,
-    > .wi-day-sunny,
-    > .wi-night-alt-cloudy,
-    > .wi-night-alt-cloudy-windy,
-    > .wi-night-alt-partly-cloudy,
-    > .wi-night-clear {
+    > .wi {
       font-size: 4rem;
     }
   }

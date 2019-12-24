@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,17 +8,19 @@ import { HttpClient } from '@angular/common/http';
 export class CurrentWeatherService {
   /* TODO:
    * Add geolocation for location data lookup
-   * Add error handling for HTTP calls
    */
+  private locationDataUrl = 'https://api.weather.gov/points/32.7454,-97.0035';
+  private observationsDataUrl = 'https://api.weather.gov/stations/KGPM/observations/latest';
+
   constructor(private http: HttpClient) { }
 
-  getWxLocationData() {
+  getWxLocationData(): Observable<any> {
     return this.http
-      .get('https://api.weather.gov/points/32.7454,-97.0035');
+      .get(this.locationDataUrl);
   }
 
-  getWxObservationsData() {
+  getWxObservationsData(): Observable<any> {
     return this.http
-      .get('https://api.weather.gov/stations/KGPM/observations/latest');
+      .get(this.observationsDataUrl);
   }
 }

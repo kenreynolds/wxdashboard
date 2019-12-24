@@ -1,4 +1,4 @@
-<mat-spinner *ngIf="isLoading" diameter="50"></mat-spinner>
+<mat-spinner *ngIf="isLoading && !error" diameter="50"></mat-spinner>
 <div class="temp-graph"
   [ngClass]="showIsLoading()"
   *ngIf="hasWxForecastData">
@@ -13,4 +13,7 @@
   </canvas>
 </div>
 
-<p *ngIf="!hasWxForecastData">Data currently unavailable</p>
+<div class="callout alert"
+  *ngIf="!hasWxForecastData && error">
+  <p>{{ error }}</p>
+</div>
