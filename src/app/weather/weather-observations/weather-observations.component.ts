@@ -11,15 +11,21 @@ import { WeatherService } from '../services/weather.service';
 })
 export class WeatherObservationsComponent implements OnInit {
   /* TODO:
-   * Add heat index
+   * Add heat index logic to latest obs card
    * Add and configure NgRx store
    * Add code to enable selection of another city
    */
   error: string;
   isLoading: boolean;
+  wxForecast: any = [];
   wxLocations: any = [];
   wxObservations: any = [];
 
+  forecastPeriod: string;
+  hasShortTermForecastData: boolean;
+  hasWxData: boolean;
+  isDaytime: boolean;
+  locationName: string;
   observedHumidity: string;
   observedPressure: string;
   observedSkyCondition: string;
@@ -28,11 +34,10 @@ export class WeatherObservationsComponent implements OnInit {
   observedWindChill: string;
   observedWindDirection: string | number;
   observedWindSpeed: string;
-  forecastPeriod: string;
-  hasWxData: boolean;
-  isDaytime: boolean;
-  locationName: string;
   observationTime: string;
+  shortTermForecastDetails: string;
+  shortTermForecastLowTemperature: string;
+  shortTermForecastPeriod: string;
   state: string;
 
   constructor(private weatherService: WeatherService) { }
@@ -41,6 +46,7 @@ export class WeatherObservationsComponent implements OnInit {
     this.isLoading = true;
     this.getWxForecastLocation();
     this.getWxObservations();
+    this.getWxShortTermForecast();
     this.getIsDaytime();
   }
 
@@ -54,6 +60,22 @@ export class WeatherObservationsComponent implements OnInit {
     } else if (currentHour > 18 && currentHour <= 24) {
       this.isDaytime = false;
     }
+  }
+
+  getWxShortTermForecast() {
+    this.weatherService
+      .getWxForecastData()
+      .subscribe(wxForecastData => {
+        this.wxForecast = wxForecastData;
+
+        if (this.wxForecast) {
+          const baseForecastUrl = this.wxForecast.properties.periods;
+          this.hasShortTermForecastData = true;
+          this.shortTermForecastDetails = baseForecastUrl[0].shortForecast;
+          this.shortTermForecastLowTemperature = baseForecastUrl[0].temperature;
+          this.shortTermForecastPeriod = baseForecastUrl[0].name;
+        }
+      })
   }
 
   getWxForecastLocation(): void {

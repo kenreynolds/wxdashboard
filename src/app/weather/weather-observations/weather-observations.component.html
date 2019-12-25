@@ -15,18 +15,18 @@
       <i class="wi" [ngClass]="showSkyConditionIcon()"></i>
     </div>
 
-    <div class="cell medium-4">
-      <p class="temperature">
-        {{ observedTemperature }}<i class="wi wi-fahrenheit"></i>
-      </p>
-      <p class="wind-chill"
-        *ngIf="observedWindChill !== null">
-        Wind chill: {{ observedWindChill }}<i class="wi wi-degrees"></i>
-      </p>
-      <p class="wind-chill"
-        *ngIf="observedWindChill === null">
-        No wind chill
-      </p>
+    <div class="cell medium-4 observed-temperature">
+        <p class="temperature">
+          {{ observedTemperature }}<i class="wi wi-fahrenheit"></i>
+        </p>
+        <p class="wind-chill"
+          *ngIf="observedWindChill !== null">
+          Wind chill: {{ observedWindChill }}<i class="wi wi-degrees"></i>
+        </p>
+        <p class="wind-chill"
+          *ngIf="observedWindChill === null">
+          No wind chill
+        </p>
     </div>
 
     <div class="cell medium-2 other-obs type">
@@ -46,6 +46,15 @@
         {{ observedWindSpeed }}
       </p>
       <p>{{ observedVisibility }}</p>
+    </div>
+
+    <div class="cell medium-12"
+      *ngIf="hasShortTermForecastData">
+      <p class="short-term-forecast">
+        <strong>{{ shortTermForecastPeriod }}</strong>:
+        {{ shortTermForecastLowTemperature }}<i class="wi wi-degrees"></i>&nbsp;-&nbsp;
+        {{ shortTermForecastDetails }}
+      </p>
     </div>
   </mat-card-content>
 </div>

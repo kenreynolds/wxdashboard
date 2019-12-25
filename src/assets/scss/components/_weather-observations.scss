@@ -50,11 +50,27 @@
     align-items: flex-start;
     display: flex;
     justify-content: center;
-    padding-top: 1.75rem;
+    padding-top: 1rem;
 
     > .wi {
       font-size: 4rem;
     }
+  }
+
+  .observed-temperature {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-top: -0.25rem;
+  }
+
+  .short-term-forecast {
+    align-items: center;
+    border-top: 1px solid #283593;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0;
+    padding-top: 6px;
   }
 
   .wind-chill {
@@ -71,7 +87,17 @@
     display: flex;
     flex-direction: column;
     margin-left: 1rem;
-    padding-top: 1.4rem;
+    padding-top: 1rem;
+
+    &.data,
+    &.type {
+      p {
+        &:last-child {
+          margin-bottom: 1rem;
+        }
+      }
+    }
+
 
     &.data {
       font-weight: bold;
