@@ -1,0 +1,19 @@
+<mat-spinner *ngIf="isLoading && !error" diameter="50"></mat-spinner>
+<div class="weather-alerts"
+  [ngClass]="showIsLoading()">
+  <mat-card-title>
+    Weather Alerts
+    <span class="date">{{ date }}</span>
+  </mat-card-title>
+
+  <mat-divider></mat-divider>
+
+  <mat-card-content>
+    <h6>{{ wxAlertEvent }}</h6>
+    <p class="description"
+      *ngFor="let element of wxAlertDescription">
+      {{ element }}
+    </p>
+    <!-- <p>{{ wxAlertInstruction }}</p> -->
+  </mat-card-content>
+</div>

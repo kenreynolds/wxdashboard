@@ -3,6 +3,23 @@
   color: #283593;
 }
 
+.short-term-forecast {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 8px;
+
+  p {
+    margin-bottom: 0;
+  }
+
+  .data {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
 .weather-observations {
   display: flex;
   flex-direction: column;
@@ -50,7 +67,7 @@
     align-items: flex-start;
     display: flex;
     justify-content: center;
-    padding-top: 1rem;
+    padding-top: 1.5rem;
 
     > .wi {
       font-size: 4rem;
@@ -62,15 +79,6 @@
     flex-direction: column;
     justify-content: flex-start;
     margin-top: -0.25rem;
-  }
-
-  .short-term-forecast {
-    align-items: center;
-    border-top: 1px solid #283593;
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 0;
-    padding-top: 8px;
   }
 
   .wind-chill {

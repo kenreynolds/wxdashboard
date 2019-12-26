@@ -48,9 +48,12 @@
       <p>{{ observedVisibility }}</p>
     </div>
 
-    <div class="cell medium-12"
+    <mat-divider [inset]="true"></mat-divider>
+
+    <div class="cell medium-12 short-term-forecast"
       *ngIf="hasShortTermForecastData">
-      <p class="short-term-forecast">
+      <p>Short Term Forecast</p>
+      <p class="data">
         <strong>{{ shortTermForecastPeriod }}</strong>:
         {{ shortTermForecastLowTemperature }}<i class="wi wi-degrees"></i>&nbsp;-&nbsp;
         {{ shortTermForecastDetails }}

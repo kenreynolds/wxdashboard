@@ -1,0 +1,26 @@
+.weather-alerts {
+  color: #283593;
+
+  > .mat-card-title {
+    align-items: flex-end;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .mat-card-content {
+    padding-top: 1rem;
+
+    > h6 {
+      font-weight: bold;
+    }
+
+    > .description {
+      margin-bottom: .25rem;
+    }
+  }
+
+  .date {
+    font-size: 1rem;
+    padding-bottom: .25rem;
+  }
+}

@@ -16,16 +16,22 @@ export class WeatherObservationsComponent implements OnInit {
    * Add code to enable selection of another city
    */
   error: string;
-  isLoading: boolean;
-  wxForecast: any = [];
-  wxLocations: any = [];
-  wxObservations: any = [];
-
-  forecastPeriod: string;
-  hasShortTermForecastData: boolean;
-  hasWxData: boolean;
   isDaytime: boolean;
+  isLoading: boolean;
+
+  wxForecast: any = [];
+  hasShortTermForecastData: boolean;
+  shortTermForecastDetails: string;
+  shortTermForecastLowTemperature: string;
+  shortTermForecastPeriod: string;
+
+  wxLocations: any = [];
   locationName: string;
+  state: string;
+
+  wxObservations: any = [];
+  hasWxData: boolean;
+  forecastPeriod: string;
   observedHumidity: string;
   observedPressure: string;
   observedSkyCondition: string;
@@ -35,10 +41,6 @@ export class WeatherObservationsComponent implements OnInit {
   observedWindDirection: string | number;
   observedWindSpeed: string;
   observationTime: string;
-  shortTermForecastDetails: string;
-  shortTermForecastLowTemperature: string;
-  shortTermForecastPeriod: string;
-  state: string;
 
   constructor(private weatherService: WeatherService) { }
 
@@ -69,6 +71,8 @@ export class WeatherObservationsComponent implements OnInit {
         this.wxForecast = wxForecastData;
 
         if (this.wxForecast) {
+          console.log('Short term forecast data loaded.');
+
           const baseForecastUrl = this.wxForecast.properties.periods;
           this.hasShortTermForecastData = true;
           this.shortTermForecastDetails = baseForecastUrl[0].shortForecast;
