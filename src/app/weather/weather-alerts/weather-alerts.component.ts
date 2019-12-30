@@ -17,6 +17,7 @@ export class WeatherAlertsComponent implements OnInit {
    */
   error: string;
   date: string;
+  hasAlerts: boolean;
   isLoading: boolean;
 
   wxAlerts: any = [];
@@ -44,14 +45,16 @@ export class WeatherAlertsComponent implements OnInit {
 
           const baseAlertsUrl = this.wxAlerts.features;
           baseAlertsUrl.forEach(alert => {
-            if (alert.properties.senderName === 'NWS Fort Worth TX') {
-              console.log(alert.properties.event);
-              console.log(alert.properties.instruction);
+            this.date = moment().format('MMM D, YYYY');
 
-              this.date = moment().format('MMM D, YYYY');
+            if (alert.properties.senderName === 'NWS Fort Worth TX') {
+              this.hasAlerts = true;
               this.wxAlertEvent = alert.properties.event;
-              this.wxAlertDescription = alert.properties.description.split('*');
-              this.wxAlertInstruction = alert.properties.instruction;
+              this.wxAlertDescription = alert.properties.description;
+
+              if (alert.properties.instruction !== null) {
+                this.wxAlertInstruction = alert.properties.instruction;
+              }
             }
           })
         }

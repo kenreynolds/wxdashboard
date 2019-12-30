@@ -201,6 +201,16 @@ export class WeatherObservationsComponent implements OnInit {
           return {
             'wi-day-sunny-overcast': true
           };
+        case 'Thunderstorms':
+        case 'Thunderstorms and Rain':
+        case 'Thunderstorms and Rain and Fog/Mist':
+          return {
+            'wi-day-thunderstorm': true
+          };
+        case 'Rain':
+          return {
+            'wi-day-rain': true
+          };
         case 'Fog':
         case 'Fog/Mist':
           return {
@@ -225,12 +235,22 @@ export class WeatherObservationsComponent implements OnInit {
         case 'Cloudy':
         case 'Overcast':
           return {
-            'wi-night-alt-cloudy': true
+            'wi-cloudy': true
+          };
+        case 'Thunderstorms':
+        case 'Thunderstorms and Rain':
+        case 'Thunderstorms and Rain and Fog/Mist':
+          return {
+            'wi-thunderstorm': true
+          };
+        case 'Rain':
+          return {
+            'wi-rain': true
           };
         case 'Fog':
         case 'Fog/Mist':
           return {
-            'wi-night-fog': true
+            'wi-fog': true
           };
       }
     }

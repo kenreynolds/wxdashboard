@@ -9,11 +9,19 @@
   <mat-divider></mat-divider>
 
   <mat-card-content>
-    <h6>{{ wxAlertEvent }}</h6>
-    <p class="description"
-      *ngFor="let element of wxAlertDescription">
-      {{ element }}
-    </p>
-    <!-- <p>{{ wxAlertInstruction }}</p> -->
+    <div *ngIf="hasAlerts; else noAlerts">
+      <h6>{{ wxAlertEvent }}</h6>
+      <p class="description">
+        {{ wxAlertDescription }}
+      </p>
+      <!-- <p class="description"
+        *ngFor="let element of wxAlertDescription">
+        {{ element }}
+      </p> -->
+      <!-- <p>{{ wxAlertInstruction }}</p> -->
+    </div>
+    <ng-template #noAlerts>
+      <p class="description">There are no active alerts in your area.</p>
+    </ng-template>
   </mat-card-content>
 </div>

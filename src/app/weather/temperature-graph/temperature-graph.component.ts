@@ -69,6 +69,7 @@ export class TemperatureGraphComponent implements OnInit {
 
               switch (forecastPeriod.name) {
                 case 'Christmas Day':
+                case 'New Year\'s Day':
                 case 'Today':
                   this.temperatureChartLabels.push(forecastPeriod.name);
                   break;
