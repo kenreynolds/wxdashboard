@@ -84,7 +84,7 @@ export class WeatherObservationsComponent implements OnInit {
 
   getWxForecastLocation(): void {
     this.weatherService
-      .getWxLocationData()
+      .getWxLocationData(32.7454, -97.0035)
       .subscribe(wxLocationData => {
         this.wxLocations = wxLocationData;
 

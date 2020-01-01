@@ -15,30 +15,27 @@ export class WeatherService {
 
   constructor(private http: HttpClient) { }
 
-  private getGeolocationData() {
-    let geoLocationData = [];
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(position => {
-        console.log(`https://api.weather.gov/points/${position.coords.latitude},${position.coords.longitude}`);
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        geoLocationData.push(lat, lng);
-      });
-      return geoLocationData;
-    }
-  }
-
   getWxAlertsData(): Observable<any> {
     return this.http
       .get(this.alertsDataUrl);
   }
 
-  getWxLocationData(): Observable<any> {
-    const locationData = this.getGeolocationData();
-    console.log(locationData);
+  getWxGeolocationData() {
+    /* TODO:
+     * Write code to send data to component via Subject
+     */
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        console.log(lat, lng);
+      });
+    }
+  }
+
+  getWxLocationData(lat, lng): Observable<any> {
     return this.http
-      .get('https://api.weather.gov/points/32.7454,-97.0035');
+      .get(`https://api.weather.gov/points/${lat},${lng}`);
   }
 
   getWxForecastData(): Observable<any> {
