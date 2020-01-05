@@ -20,21 +20,22 @@ export class WeatherService {
       .get(this.alertsDataUrl);
   }
 
-  getWxLocationData(): Observable<any> {
+  getWxGeolocationData() {
+    /* TODO:
+     * Write code to send data to component via Subject
+     */
     if (navigator.geolocation) {
-      let geoLocationData = [];
-      let locationUrl: string = '';
-
       navigator.geolocation.getCurrentPosition(position => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
-        geoLocationData.push(lat, lng);
-        locationUrl = `https://api.weather.gov/points/${lat},${lng}`;
-        console.log(locationUrl);
+        console.log(lat, lng);
       });
-      return this.http
-        .get('https://api.weather.gov/points/32.7454,-97.0035');
     }
+  }
+
+  getWxLocationData(): Observable<any> {
+    return this.http
+      .get('https://api.weather.gov/points/32.7454,-97.0035');
   }
 
   getWxForecastData(): Observable<any> {
