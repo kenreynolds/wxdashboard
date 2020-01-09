@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class WeatherService {
   /* TODO:
-   * Add geolocation for location data lookup
+   * Pass station ID instead of hard coding
    */
   private alertsDataUrl = 'https://api.weather.gov/alerts/active';
   private forecastUrl = 'https://api.weather.gov/gridpoints/FWD/81,102/forecast';
@@ -20,22 +20,10 @@ export class WeatherService {
       .get(this.alertsDataUrl);
   }
 
-  getWxGeolocationData() {
-    /* TODO:
-     * Write code to send data to component via Subject
-     */
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(position => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        console.log(lat, lng);
-      });
-    }
-  }
-
-  getWxLocationData(): Observable<any> {
+  getWxLocationData(url): Observable<any> {
+    console.log(`Forecast location URL: ${url}`);
     return this.http
-      .get('https://api.weather.gov/points/32.7454,-97.0035');
+      .get(url);
   }
 
   getWxForecastData(): Observable<any> {

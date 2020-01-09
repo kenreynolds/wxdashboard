@@ -25,7 +25,7 @@ export class WeatherObservationsComponent implements OnInit {
   shortTermForecastLowTemperature: string;
   shortTermForecastPeriod: string;
 
-  wxLocations: any = [];
+  wxLocationInfo: any = [];
   locationName: string;
   state: string;
 
@@ -46,7 +46,6 @@ export class WeatherObservationsComponent implements OnInit {
 
   ngOnInit() {
     this.isLoading = true;
-    this.getWxForecastLocation();
     this.getWxObservations();
     this.getWxShortTermForecast();
     this.getIsDaytime();
@@ -82,17 +81,19 @@ export class WeatherObservationsComponent implements OnInit {
       })
   }
 
-  getWxForecastLocation(): void {
+  getWxForecastLocation(url): void {
     this.weatherService
-      .getWxLocationData(32.7454, -97.0035)
+      .getWxLocationData(url)
       .subscribe(wxLocationData => {
-        this.wxLocations = wxLocationData;
+        this.wxLocationInfo = wxLocationData;
+        console.log('WX location data:');
+        console.log(this.wxLocationInfo);
 
-        if (this.wxLocations) {
+        if (this.wxLocationInfo) {
           this.isLoading = false;
           console.log('Location data loaded.');
 
-          const baseLocationUrl = this.wxLocations.properties.relativeLocation.properties;
+          const baseLocationUrl = this.wxLocationInfo.properties.relativeLocation.properties;
           this.locationName = baseLocationUrl.city;
           this.state = baseLocationUrl.state;
         } else {
@@ -114,13 +115,15 @@ export class WeatherObservationsComponent implements OnInit {
   }
 
   getWxObservations(): void {
+    this.setCurrentLocation();
     this.weatherService
       .getWxObservationsData()
       .subscribe(wxObservationData => {
-        if (this.locationName === 'Grand Prairie' && this.state === 'TX') {
           this.wxObservations = wxObservationData;
+          console.log('WX Observations:');
+          console.log(this.wxObservations);
 
-          if (this.wxObservations && !this.isLoading) {
+          if (this.wxObservations) {
             this.hasWxData = true;
             console.log('Weather data loaded.');
             const baseObservationsUrl = this.wxObservations.properties;
@@ -165,11 +168,23 @@ export class WeatherObservationsComponent implements OnInit {
             this.isLoading = false;
             console.log('No weather data to show.');
           }
-        }
       }, error => {
         console.log(error);
         this.error = 'Latest observations are currently unavailable.';
       });
+  }
+
+  setCurrentLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        const wxUrl = `https://api.weather.gov/points/${latitude},${longitude}`;
+        this.getWxForecastLocation(wxUrl);
+      });
+    } else {
+      console.log('Your browser does not support geolocation at this time.');
+    }
   }
 
   showIsLoading() {
