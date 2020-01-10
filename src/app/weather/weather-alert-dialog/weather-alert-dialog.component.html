@@ -4,9 +4,14 @@
 
 <mat-dialog-content>
   <div class="alert-text">
-    <p *ngFor="let element of alertText">
-      {{ element }}
+    <p *ngIf="!isSplitString">
+      {{ alertText }}
     </p>
+    <span *ngIf="isSplitString">
+      <p *ngFor="let element of alertText">
+        {{ element }}
+      </p>
+    </span>
   </div>
 </mat-dialog-content>
 

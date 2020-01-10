@@ -229,6 +229,7 @@ export class WeatherObservationsComponent implements OnInit {
             'wi-day-thunderstorm': true
           };
         case 'Rain':
+        case 'Light Rain':
           return {
             'wi-day-rain': true
           };
@@ -265,6 +266,7 @@ export class WeatherObservationsComponent implements OnInit {
             'wi-thunderstorm': true
           };
         case 'Rain':
+        case 'Light Rain':
           return {
             'wi-rain': true
           };
