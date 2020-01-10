@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
 
 import * as moment from 'moment';
 import * as weatherUtils from '../weather-utils';
@@ -63,16 +62,6 @@ export class WeatherObservationsComponent implements OnInit {
     } else if (currentHour > 18 && currentHour <= 24) {
       this.isDaytime = false;
     }
-  }
-
-  getWxGeolocation() {
-    this.weatherService
-      .getWxGeolocationData()
-      .subscribe(wxGeolocationData => {
-        this.wxGeolocation = wxGeolocationData;
-        this.lat = this.wxGeolocation.lat;
-        this.lng = this.wxGeolocation.lon;
-      });
   }
 
   getWxShortTermForecast() {
