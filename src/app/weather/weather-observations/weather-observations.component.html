@@ -52,7 +52,9 @@
 
     <div class="cell medium-12 short-term-forecast"
       *ngIf="hasShortTermForecastData">
-      <p class="data">
+      <p class="data"
+        matTooltip="{{ tooltipText }}"
+        matTooltipPosition="above">
         <strong>{{ shortTermForecastPeriod }}</strong>:
         {{ shortTermForecastLowTemperature }}<i class="wi wi-degrees"></i>&nbsp;-&nbsp;
         {{ shortTermForecastDetails }}

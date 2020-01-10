@@ -1,20 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+
 import * as moment from 'moment';
 import { WeatherService } from '../services/weather.service';
+import { WeatherAlertDialogComponent } from '../weather-alert-dialog/weather-alert-dialog.component';
 
 @Component({
   selector: 'app-weather-alerts',
   templateUrl: './weather-alerts.component.html'
 })
 export class WeatherAlertsComponent implements OnInit {
-  /* TODO:
-   * Refactor weather alerts card
-   ** Remove description from card face
-   ** Add 'More information' link
-   ** Show description and instruction in Material Dialog
-      when 'More information' link is clicked
-   */
   error: string;
   date: string;
   hasAlerts: boolean;
@@ -26,7 +22,10 @@ export class WeatherAlertsComponent implements OnInit {
   wxAlertDescription: string;
   wxAlertInstruction: string;
 
-  constructor(private weatherService: WeatherService) { }
+  constructor(
+    private weatherService: WeatherService,
+    private matDialog: MatDialog
+  ) { }
 
   ngOnInit() {
     this.isLoading = true;
@@ -62,6 +61,18 @@ export class WeatherAlertsComponent implements OnInit {
         console.log(error);
         this.error = 'Weather alerts are currently unavailable.';
       });
+  }
+
+  openAlertDialog(title, text) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      alertTitle: title,
+      alertText: text
+    }
+
+    const dialogRef = this.matDialog.open(WeatherAlertDialogComponent, dialogConfig);
+    dialogRef.afterClosed()
+      .subscribe(data => console.log("Dialog output: ", data));
   }
 
   showIsLoading() {

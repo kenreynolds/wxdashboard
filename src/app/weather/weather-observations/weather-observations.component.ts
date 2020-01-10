@@ -41,6 +41,7 @@ export class WeatherObservationsComponent implements OnInit {
   observedWindDirection: string | number;
   observedWindSpeed: string;
   observationTime: string;
+  tooltipText: string;
 
   constructor(private weatherService: WeatherService) { }
 
@@ -77,6 +78,12 @@ export class WeatherObservationsComponent implements OnInit {
           this.shortTermForecastDetails = baseForecastUrl[0].shortForecast;
           this.shortTermForecastLowTemperature = baseForecastUrl[0].temperature;
           this.shortTermForecastPeriod = baseForecastUrl[0].name;
+          this.tooltipText = baseForecastUrl[0].shortForecast;
+
+          if (this.shortTermForecastDetails.length > 40) {
+            const splitDetails = this.shortTermForecastDetails.split('then');
+            this.shortTermForecastDetails = `${splitDetails[0]} ...`;
+          }
         }
       })
   }
