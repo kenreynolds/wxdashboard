@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import * as moment from 'moment';
 import * as weatherUtils from '../weather-utils';
@@ -64,6 +65,16 @@ export class WeatherObservationsComponent implements OnInit {
     }
   }
 
+  getWxGeolocation() {
+    this.weatherService
+      .getWxGeolocationData()
+      .subscribe(wxGeolocationData => {
+        this.wxGeolocation = wxGeolocationData;
+        this.lat = this.wxGeolocation.lat;
+        this.lng = this.wxGeolocation.lon;
+      });
+  }
+
   getWxShortTermForecast() {
     this.weatherService
       .getWxForecastData()
@@ -72,7 +83,6 @@ export class WeatherObservationsComponent implements OnInit {
 
         if (this.wxForecast) {
           console.log('Short term forecast data loaded.');
-
           const baseForecastUrl = this.wxForecast.properties.periods;
           this.hasShortTermForecastData = true;
           this.shortTermForecastDetails = baseForecastUrl[0].shortForecast;
