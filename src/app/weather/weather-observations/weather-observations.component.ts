@@ -12,12 +12,12 @@ import { WeatherService } from '../services/weather.service';
 export class WeatherObservationsComponent implements OnInit {
   /* TODO:
    * Add heat index logic to latest obs card
-   * Add and configure NgRx store
    * Add code to enable selection of another city
    */
   error: string;
   isDaytime: boolean;
   isLoading: boolean;
+  isTonight: boolean;
 
   wxForecast: any = [];
   hasShortTermForecastData: boolean;
@@ -31,6 +31,8 @@ export class WeatherObservationsComponent implements OnInit {
 
   wxObservations: any = [];
   hasWxData: boolean;
+  forecastHighTemperature: string;
+  forecastLowTemperature: string;
   forecastPeriod: string;
   observedHumidity: string;
   observedPressure: string;
@@ -41,7 +43,6 @@ export class WeatherObservationsComponent implements OnInit {
   observedWindDirection: string | number;
   observedWindSpeed: string;
   observationTime: string;
-  tooltipText: string;
 
   constructor(private weatherService: WeatherService) { }
 
@@ -77,12 +78,21 @@ export class WeatherObservationsComponent implements OnInit {
           this.shortTermForecastDetails = baseForecastUrl[0].shortForecast;
           this.shortTermForecastLowTemperature = baseForecastUrl[0].temperature;
           this.shortTermForecastPeriod = baseForecastUrl[0].name;
-          this.tooltipText = baseForecastUrl[0].shortForecast;
 
-          if (this.shortTermForecastDetails.length > 40) {
+          if (baseForecastUrl[0].name === 'Tonight') {
+            this.isTonight = true;
+            this.forecastHighTemperature = baseForecastUrl[1].temperature;
+            this.forecastLowTemperature = baseForecastUrl[0].temperature;
+          } else {
+            this.isTonight = false;
+            this.forecastHighTemperature = baseForecastUrl[0].temperature;
+            this.forecastLowTemperature = baseForecastUrl[1].temperature;
+          }
+
+          /* if (this.shortTermForecastDetails.length > 40) {
             const splitDetails = this.shortTermForecastDetails.split('then');
             this.shortTermForecastDetails = `${splitDetails[0]} ...`;
-          }
+          } */
         }
       })
   }

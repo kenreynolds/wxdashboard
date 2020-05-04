@@ -17,10 +17,13 @@ export class WeatherAlertsComponent implements OnInit {
   isLoading: boolean;
 
   wxAlerts: any = [];
+  wxAlertEvents: any = [];
+  wxAlertDescriptions: any = [];
+  wxAlertInstructions: any = [];
+  event: string;
+  description: string;
+  instruction: string
   wxAlertForecastOffice: string;
-  wxAlertEvent: string;
-  wxAlertDescription: string;
-  wxAlertInstruction: string;
 
   constructor(
     private weatherService: WeatherService,
@@ -48,13 +51,22 @@ export class WeatherAlertsComponent implements OnInit {
 
             if (alert.properties.senderName === 'NWS Fort Worth TX') {
               this.hasAlerts = true;
-              this.wxAlertEvent = alert.properties.event;
-              this.wxAlertDescription = alert.properties.description;
-
-              if (alert.properties.instruction !== null) {
-                this.wxAlertInstruction = alert.properties.instruction;
-              }
+              this.wxAlertEvents.push(alert.properties.event);
+              this.wxAlertDescriptions.push(alert.properties.description);
+              this.wxAlertInstructions.push(alert.properties.instruction);
             }
+
+            this.wxAlertEvents.forEach(event => {
+              this.event = event;
+            });
+
+            this.wxAlertDescriptions.forEach(description => {
+              this.description = description;
+            });
+
+            this.wxAlertInstructions.forEach(instruction => {
+              this.instruction = instruction;
+            });
           })
         }
       }, error => {
@@ -63,11 +75,12 @@ export class WeatherAlertsComponent implements OnInit {
       });
   }
 
-  openAlertDialog(title, text) {
+  openAlertDialog(title, text, details) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       alertTitle: title,
-      alertText: text
+      alertText: text,
+      alertDetails: details
     }
 
     const dialogRef = this.matDialog.open(WeatherAlertDialogComponent, dialogConfig);

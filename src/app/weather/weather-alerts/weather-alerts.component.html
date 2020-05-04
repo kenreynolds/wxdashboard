@@ -10,11 +10,15 @@
 
   <mat-card-content>
     <div class="alert-content" *ngIf="hasAlerts; else noAlerts">
-      <h6>{{ wxAlertEvent }}</h6>
-      <button class="view-alert" type="button"
-        (click)="openAlertDialog(wxAlertEvent, wxAlertDescription)">
-        View alert
-      </button>
+      <span class="alert" *ngFor="let eventTitle of wxAlertEvents">
+        <h6>
+          {{ eventTitle }}
+        </h6>
+        <button class="view-alert" type="button"
+          (click)="openAlertDialog(event, description, instruction)">
+          View alert
+        </button>
+      </span>
     </div>
     <ng-template #noAlerts>
       <p class="description">There are no active alerts in your area.</p>

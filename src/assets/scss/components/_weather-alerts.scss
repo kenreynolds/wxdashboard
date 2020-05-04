@@ -7,18 +7,14 @@
     justify-content: space-between;
   }
 
-  .alert-content {
+  .alert {
     align-items: center;
     display: flex;
     justify-content: space-between;
-    padding-top: 1rem;
+    margin-bottom: .75rem;
 
     > h6 {
       margin-bottom: 0;
-    }
-
-    > .mat-card-content {
-      padding-top: 1rem;
     }
 
     > .view-alert {
@@ -30,6 +26,14 @@
         text-decoration: underline;
       }
     }
+  }
+
+  .alert-content {
+    align-items: space-between;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 1rem;
   }
 
   .date {

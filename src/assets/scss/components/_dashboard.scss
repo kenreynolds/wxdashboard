@@ -7,3 +7,19 @@
     margin-bottom: 16px;
   }
 }
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+
+  > .mat-card-subtitle {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  > .mat-card-title {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+}

@@ -21,7 +21,6 @@ export class WeatherService {
   }
 
   getWxLocationData(url): Observable<any> {
-    console.log(`Forecast location URL: ${url}`);
     return this.http
       .get(url);
   }

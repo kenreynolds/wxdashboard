@@ -7,11 +7,15 @@
 }
 
 .temp-graph {
-  display: block;
+  display: flex;
 
   &.loading {
     background-color: white;
     height: 300px;
     opacity: .05;
+  }
+
+  > .graph-canvas {
+    height: auto !important;
   }
 }

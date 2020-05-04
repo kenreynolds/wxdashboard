@@ -8,14 +8,17 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class WeatherAlertDialogComponent {
   alertTitle: string;
   alertText: string;
+  alertDetails: string;
   isSplitString: boolean;
 
   constructor(
     private dialogRef: MatDialogRef<WeatherAlertDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data
   ) {
+    this.isSplitString = false;
     this.alertTitle = data.alertTitle;
     this.alertText = data.alertText;
+    this.alertDetails = data.alertDetails;
 
     if (data.alertText.includes('*')) {
       this.alertText = data.alertText.split('*');

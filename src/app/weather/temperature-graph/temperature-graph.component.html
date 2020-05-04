@@ -3,6 +3,7 @@
   [ngClass]="showIsLoading()"
   *ngIf="hasWxForecastData">
   <canvas height="250" width="800"
+    class="graph-canvas"
     baseChart
     [chartType]="'line'"
     [colors]="temperatureChartColors"
