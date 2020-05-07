@@ -16,22 +16,18 @@ export class WeatherService {
   constructor(private http: HttpClient) { }
 
   getWxAlertsData(): Observable<any> {
-    return this.http
-      .get(this.alertsDataUrl);
+    return this.http.get(this.alertsDataUrl);
   }
 
   getWxLocationData(url): Observable<any> {
-    return this.http
-      .get(url);
+    return this.http.get(url);
   }
 
   getWxForecastData(): Observable<any> {
-    return this.http
-      .get(this.forecastUrl);
+    return this.http.get(this.forecastUrl);
   }
 
   getWxObservationsData(): Observable<any> {
-    return this.http
-      .get(this.observationsDataUrl);
+    return this.http.get(this.observationsDataUrl);
   }
 }

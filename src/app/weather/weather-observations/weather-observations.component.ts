@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
+import { CurrentObservations, ShortTermForecast } from '../models/weather';
+import { WeatherService } from '../services/weather.service';
+
 import * as moment from 'moment';
 import * as weatherUtils from '../weather-utils';
-
-import { WeatherService } from '../services/weather.service';
 
 @Component({
   selector: 'app-weather-observations',
@@ -20,29 +21,17 @@ export class WeatherObservationsComponent implements OnInit {
   isTonight: boolean;
 
   wxForecast: any = [];
+  shortTermForecast: ShortTermForecast;
   hasShortTermForecastData: boolean;
-  shortTermForecastDetails: string;
-  shortTermForecastLowTemperature: string;
-  shortTermForecastPeriod: string;
 
   wxLocationInfo: any = [];
   locationName: string;
   state: string;
 
   wxObservations: any = [];
-  hasWxData: boolean;
-  forecastHighTemperature: string;
-  forecastLowTemperature: string;
+  currentObservations: CurrentObservations;
   forecastPeriod: string;
-  observedHumidity: string;
-  observedPressure: string;
-  observedSkyCondition: string;
-  observedTemperature: string;
-  observedVisibility: string;
-  observedWindChill: string;
-  observedWindDirection: string | number;
-  observedWindSpeed: string;
-  observationTime: string;
+  hasWxData: boolean;
 
   constructor(private weatherService: WeatherService) { }
 
@@ -75,26 +64,28 @@ export class WeatherObservationsComponent implements OnInit {
           console.log('Short term forecast data loaded.');
           const baseForecastUrl = this.wxForecast.properties.periods;
           this.hasShortTermForecastData = true;
-          this.shortTermForecastDetails = baseForecastUrl[0].shortForecast;
-          this.shortTermForecastLowTemperature = baseForecastUrl[0].temperature;
-          this.shortTermForecastPeriod = baseForecastUrl[0].name;
 
           if (baseForecastUrl[0].name === 'Tonight') {
             this.isTonight = true;
-            this.forecastHighTemperature = baseForecastUrl[1].temperature;
-            this.forecastLowTemperature = baseForecastUrl[0].temperature;
+            this.shortTermForecast = {
+              forecastHighTemperature: baseForecastUrl[1].temperature,
+              forecastLowTemperature: baseForecastUrl[0].temperature,
+              shortTermForecastDetails: baseForecastUrl[0].shortForecast,
+              shortTermForecastLowTemperature: baseForecastUrl[0].temperature,
+              shortTermForecastPeriod: baseForecastUrl[0].name,
+            }
           } else {
             this.isTonight = false;
-            this.forecastHighTemperature = baseForecastUrl[0].temperature;
-            this.forecastLowTemperature = baseForecastUrl[1].temperature;
+            this.shortTermForecast = {
+              forecastHighTemperature: baseForecastUrl[0].temperature,
+              forecastLowTemperature: baseForecastUrl[1].temperature,
+              shortTermForecastDetails: baseForecastUrl[0].shortForecast,
+              shortTermForecastLowTemperature: baseForecastUrl[0].temperature,
+              shortTermForecastPeriod: baseForecastUrl[0].name,
+            }
           }
-
-          /* if (this.shortTermForecastDetails.length > 40) {
-            const splitDetails = this.shortTermForecastDetails.split('then');
-            this.shortTermForecastDetails = `${splitDetails[0]} ...`;
-          } */
         }
-      })
+      });
   }
 
   getWxForecastLocation(url): void {
@@ -114,14 +105,18 @@ export class WeatherObservationsComponent implements OnInit {
           this.state = baseLocationUrl.state;
         } else {
           this.isLoading = false;
-          this.observedWindChill = '--';
-          this.observedHumidity = '--';
-          this.observedPressure = '--';
-          this.observedTemperature = '--';
-          this.observedVisibility = '--';
-          this.observedWindSpeed = '--';
+          this.currentObservations = {
+            observedHumidity: '--',
+            observedPressure: '--',
+            observedSkyCondition: '--',
+            observedTemperature: '--',
+            observedVisibility: '--',
+            observedWindChill: '--',
+            observedWindDirection: '--',
+            observedWindSpeed: '--',
+            observationTime: '--'
+          }
           this.locationName = '--';
-          this.observationTime = '--';
           this.state = '--';
         }
       }, error => {
@@ -140,49 +135,33 @@ export class WeatherObservationsComponent implements OnInit {
           console.log(this.wxObservations);
 
           if (this.wxObservations) {
-            this.hasWxData = true;
             console.log('Weather data loaded.');
             const baseObservationsUrl = this.wxObservations.properties;
+            let windChillValue: string;
+
+            this.hasWxData = true;
 
             if (baseObservationsUrl.windChill.value === null) {
-              this.observedWindChill = null;
+              windChillValue = null;
             } else {
-              this.observedWindChill = Math.floor(weatherUtils.convertCelsiusToFahrenheit(baseObservationsUrl.windChill.value)).toString();
+              windChillValue = Math.floor(weatherUtils.convertCelsiusToFahrenheit(baseObservationsUrl.windChill.value)).toString();
             }
 
-            this.observedHumidity = `${Math.floor(baseObservationsUrl.relativeHumidity.value)}%`;
-            this.observedPressure = `${Math.floor(weatherUtils.convertPascalsToMillibar(baseObservationsUrl.barometricPressure.value))} mb`;
-            this.observedSkyCondition = baseObservationsUrl.textDescription;
-            this.observedTemperature = Math.floor(weatherUtils.convertCelsiusToFahrenheit(baseObservationsUrl.temperature.value)).toString();
-            this.observedVisibility = `${Math.floor(weatherUtils.convertMetersToMiles(baseObservationsUrl.visibility.value))} mi`;
-            this.observedWindDirection = baseObservationsUrl.windDirection.value;
-            this.observedWindSpeed = `${Math.floor(weatherUtils.convertMetersPerSecondToMilePerHour(baseObservationsUrl.windSpeed.value))} mph`;
-            this.observationTime = moment.utc(baseObservationsUrl.timestamp).local().format('LT');
-
-            if (
-              this.observedWindDirection >= 0 && this.observedWindDirection <= 10 ||
-              this.observedWindDirection > 350 && this.observedWindDirection <= 360
-            ) {
-              this.observedWindDirection = 'N'
-            } else if (this.observedWindDirection > 10 && this.observedWindDirection <= 80) {
-              this.observedWindDirection = 'NE';
-            } else if (this.observedWindDirection > 80 && this.observedWindDirection <= 100) {
-              this.observedWindDirection = 'E';
-            } else if (this.observedWindDirection > 100 && this.observedWindDirection <= 170) {
-              this.observedWindDirection = 'SE';
-            } else if (this.observedWindDirection > 170 && this.observedWindDirection <= 190) {
-              this.observedWindDirection = 'S';
-            } else if (this.observedWindDirection > 190 && this.observedWindDirection <= 260) {
-              this.observedWindDirection = 'SW';
-            } else if (this.observedWindDirection > 260 && this.observedWindDirection <= 280) {
-              this.observedWindDirection = 'W';
-            } else if (this.observedWindDirection > 280 && this.observedWindDirection <= 350) {
-              this.observedWindDirection = 'NW';
+            this.currentObservations = {
+              observedHumidity: `${Math.floor(baseObservationsUrl.relativeHumidity.value)}%`,
+              observedPressure: `${Math.floor(weatherUtils.convertPascalsToMillibar(baseObservationsUrl.barometricPressure.value))} mb`,
+              observedSkyCondition: baseObservationsUrl.textDescription,
+              observedTemperature: Math.floor(weatherUtils.convertCelsiusToFahrenheit(baseObservationsUrl.temperature.value)).toString(),
+              observedVisibility: `${Math.floor(weatherUtils.convertMetersToMiles(baseObservationsUrl.visibility.value))} mi`,
+              observedWindChill: windChillValue,
+              observedWindDirection: baseObservationsUrl.windDirection.value,
+              observedWindSpeed: `${Math.floor(weatherUtils.convertMetersPerSecondToMilePerHour(baseObservationsUrl.windSpeed.value))} mph`,
+              observationTime: moment.utc(baseObservationsUrl.timestamp).local().format('LT')
             }
           } else {
+            console.log('No weather data to show.');
             this.hasWxData = false;
             this.isLoading = false;
-            console.log('No weather data to show.');
           }
       }, error => {
         console.log(error);
@@ -213,7 +192,7 @@ export class WeatherObservationsComponent implements OnInit {
 
   showSkyConditionIcon() {
     if (this.isDaytime) {
-      switch (this.observedSkyCondition) {
+      switch (this.currentObservations.observedSkyCondition) {
         case 'Clear':
         case 'Mostly Clear':
         case 'Sunny':
@@ -250,7 +229,7 @@ export class WeatherObservationsComponent implements OnInit {
           };
       }
     } else {
-      switch (this.observedSkyCondition) {
+      switch (this.currentObservations.observedSkyCondition) {
         case 'Clear':
         case 'Mostly Clear':
         case 'Sunny':
@@ -290,10 +269,31 @@ export class WeatherObservationsComponent implements OnInit {
   }
 
   showWindDirectionIcon() {
-    if (this.observedWindSpeed === '0 mph') {
+    if (this.currentObservations.observedWindSpeed === '0 mph') {
       return;
     } else {
-      switch (this.observedWindDirection) {
+      if (
+        this.currentObservations.observedWindDirection >= 0 && this.currentObservations.observedWindDirection <= 10
+        || this.currentObservations.observedWindDirection > 350 && this.currentObservations.observedWindDirection <= 360
+      ) {
+        this.currentObservations.observedWindDirection = 'N'
+      } else if (this.currentObservations.observedWindDirection > 10 && this.currentObservations.observedWindDirection <= 80) {
+        this.currentObservations.observedWindDirection = 'NE';
+      } else if (this.currentObservations.observedWindDirection > 80 && this.currentObservations.observedWindDirection <= 100) {
+        this.currentObservations.observedWindDirection = 'E';
+      } else if (this.currentObservations.observedWindDirection > 100 && this.currentObservations.observedWindDirection <= 170) {
+        this.currentObservations.observedWindDirection = 'SE';
+      } else if (this.currentObservations.observedWindDirection > 170 && this.currentObservations.observedWindDirection <= 190) {
+        this.currentObservations.observedWindDirection = 'S';
+      } else if (this.currentObservations.observedWindDirection > 190 && this.currentObservations.observedWindDirection <= 260) {
+        this.currentObservations.observedWindDirection = 'SW';
+      } else if (this.currentObservations.observedWindDirection > 260 && this.currentObservations.observedWindDirection <= 280) {
+        this.currentObservations.observedWindDirection = 'W';
+      } else if (this.currentObservations.observedWindDirection > 280 && this.currentObservations.observedWindDirection <= 350) {
+        this.currentObservations.observedWindDirection = 'NW';
+      }
+
+      switch (this.currentObservations.observedWindDirection) {
         case 'N':
           return {
             'wi-direction-down': true

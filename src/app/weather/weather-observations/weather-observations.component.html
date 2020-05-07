@@ -6,7 +6,7 @@
   <div class="page-header">
     <mat-card-title>
       Latest Observations
-      <span class="observation-time">{{ observationTime }}</span>
+      <span class="observation-time">{{ currentObservations.observationTime }}</span>
     </mat-card-title>
 
     <mat-card-subtitle>
@@ -23,14 +23,14 @@
 
       <div class="cell small-6 observed-temperature">
         <p class="temperature">
-          {{ observedTemperature }}<i class="wi wi-fahrenheit"></i>
+          {{ currentObservations.observedTemperature }}<i class="wi wi-fahrenheit"></i>
         </p>
         <p class="wind-chill"
-          *ngIf="observedWindChill !== null">
-          Wind chill: {{ observedWindChill }}<i class="wi wi-degrees"></i>
+          *ngIf="currentObservations.observedWindChill !== null">
+          Wind chill: {{ currentObservations.observedWindChill }}<i class="wi wi-degrees"></i>
         </p>
         <p class="wind-chill"
-          *ngIf="observedWindChill === null">
+          *ngIf="currentObservations.observedWindChill === null">
           No wind chill
         </p>
       </div>
@@ -38,21 +38,21 @@
       <div class="cell small-3 forecast-temperatures"
         *ngIf="!isTonight; else tonight">
         <p class="high">
-          High: <strong>{{ forecastHighTemperature }}<i class="wi wi-degrees"></i></strong>
+          High: <strong>{{ shortTermForecast.forecastHighTemperature }}<i class="wi wi-degrees"></i></strong>
         </p>
         <div class="divider"></div>
         <p class="low">
-          Low: <strong>{{ forecastLowTemperature }}<i class="wi wi-degrees"></i></strong>
+          Low: <strong>{{ shortTermForecast.forecastLowTemperature }}<i class="wi wi-degrees"></i></strong>
         </p>
       </div>
       <ng-template #tonight>
         <div class="cell small-3 forecast-temperatures">
           <p class="low">
-            Low: <strong>{{ forecastLowTemperature }}<i class="wi wi-degrees"></i></strong>
+            Low: <strong>{{ shortTermForecast.forecastLowTemperature }}<i class="wi wi-degrees"></i></strong>
           </p>
           <div class="divider"></div>
           <p class="high">
-            High: <strong>{{ forecastHighTemperature }}<i class="wi wi-degrees"></i></strong>
+            High: <strong>{{ shortTermForecast.forecastHighTemperature }}<i class="wi wi-degrees"></i></strong>
           </p>
         </div>
       </ng-template>
@@ -67,10 +67,10 @@
       </div>
 
       <div class="cell small-4 other-obs value">
-        <p>{{ observedWindSpeed }}</p>
-        <p>{{ observedVisibility }}</p>
-        <p>{{ observedHumidity }}</p>
-        <p>{{ observedPressure }}</p>
+        <p>{{ currentObservations.observedWindSpeed }}</p>
+        <p>{{ currentObservations.observedVisibility }}</p>
+        <p>{{ currentObservations.observedHumidity }}</p>
+        <p>{{ currentObservations.observedPressure }}</p>
       </div>
 
       <div class="cell small-3 wind-info">
@@ -85,9 +85,9 @@
     <div class="cell small-12 short-term-forecast padding-top-2"
       *ngIf="hasShortTermForecastData">
       <p class="data">
-        <strong>{{ shortTermForecastPeriod }}</strong>:
-        {{ shortTermForecastLowTemperature }}<i class="wi wi-degrees"></i>&nbsp;-&nbsp;
-        {{ shortTermForecastDetails }}
+        <strong>{{ shortTermForecast.shortTermForecastPeriod }}</strong>:
+        {{ shortTermForecast.shortTermForecastLowTemperature }}<i class="wi wi-degrees"></i>&nbsp;-&nbsp;
+        {{ shortTermForecast.shortTermForecastDetails }}
       </p>
     </div>
   </mat-card-content>
