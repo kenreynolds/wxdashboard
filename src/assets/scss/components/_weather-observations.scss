@@ -1,22 +1,27 @@
-.weather-observations,
-.mat-card-subtitle {
-  color: #283593;
-}
-
 .weather-observations {
+  /* background-image: radial-gradient(
+    #8BC34A,
+    #4CAF50
+    ); */
+  /* background-image: radial-gradient(
+    #FF9800,
+    #FF5722
+    ); */
+  background-image: radial-gradient(
+    #03A9F4,
+    #2196F3
+    );
+  color: white;
   display: flex;
   flex-direction: column;
 
-  .conditions-icon,
+  .conditions,
   .forecast-temperatures,
-  .observed-temperature,
   .wind-info {
     display: flex;
-    height: 120px;
   }
 
   .forecast-temperatures,
-  .observed-temperature,
   .other-obs {
     flex-direction: column;
   }
@@ -37,19 +42,19 @@
     opacity: .05;
   }
 
-  .card-link {
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
-  .conditions-icon {
+  .conditions {
     align-items: center;
-    justify-content: flex-end;
-    padding-right: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    > .temperature {
+      font-size: 4rem;
+      margin-bottom: 0;
+    }
 
     > .wi {
-      font-size: 4rem;
+      font-size: 5rem;
     }
   }
 
@@ -58,6 +63,7 @@
   }
 
   .forecast-temperatures {
+    height: 75px;
     justify-content: center;
 
     .high,
@@ -80,19 +86,16 @@
     }
   }
 
-  .observed-temperature {
-    align-items: flex-start;
-    justify-content: flex-start;
-    padding-left: 0.5rem;
-  }
-
   .wind-chill {
     font-size: 1rem;
     margin-top: -1.5rem;
   }
 
   .observation-time {
-    font-size: 1rem;
+    display: flex;
+    font-size: 2rem;
+    justify-content: center;
+    padding: 0.5rem 0;
   }
 
   .other-obs {
@@ -125,11 +128,6 @@
     p {
       margin-bottom: 0;
     }
-  }
-
-  .temperature {
-    font-size: 4rem;
-    margin-bottom: 0;
   }
 
   .wi-direction-down-right {

@@ -4,60 +4,45 @@
   *ngIf="hasWxData">
 
   <div class="page-header">
-    <mat-card-title>
-      Latest Observations
-      <span class="observation-time">{{ currentObservations.observationTime }}</span>
-    </mat-card-title>
-
-    <mat-card-subtitle>
-      {{ locationName }}, {{ state }}
-      <a class="card-link" href="#">Select another city</a>
-    </mat-card-subtitle>
+    <div class="date">{{ currentObservations.currentDate }}</div>
+    <div class="observation-time">{{ currentObservations.observationTime }}</div>
+    <div class="location">{{ locationName }}, {{ state }}</div>
   </div>
 
-  <mat-card-content class="grid-y align-justify">
-    <div class="grid-x padding-vertical-3">
-      <div class="cell small-3 conditions-icon">
-        <i class="wi" [ngClass]="showSkyConditionIcon()"></i>
-      </div>
+  <div class="grid-x padding-top-4">
+    <div class="cell conditions">
+      <i class="wi" [ngClass]="showSkyConditionIcon()"></i>
+      <span class="temperature">
+        {{ currentObservations.observedTemperature }}<i class="wi wi-degrees"></i>
+      </span>
+    </div>
+  </div>
 
-      <div class="cell small-6 observed-temperature">
-        <p class="temperature">
-          {{ currentObservations.observedTemperature }}<i class="wi wi-fahrenheit"></i>
-        </p>
-        <p class="wind-chill"
-          *ngIf="currentObservations.observedWindChill !== null">
-          Wind chill: {{ currentObservations.observedWindChill }}<i class="wi wi-degrees"></i>
-        </p>
-        <p class="wind-chill"
-          *ngIf="currentObservations.observedWindChill === null">
-          No wind chill
-        </p>
-      </div>
-
-      <div class="cell small-3 forecast-temperatures"
-        *ngIf="!isTonight; else tonight">
-        <p class="high">
-          High: <strong>{{ shortTermForecast.forecastHighTemperature }}<i class="wi wi-degrees"></i></strong>
-        </p>
-        <div class="divider"></div>
+  <div class="grid-x align-center padding-bottom-3">
+    <div class="cell forecast-temperatures"
+      *ngIf="!isTonight; else tonight">
+      <p class="high">
+        High: <strong>{{ shortTermForecast.forecastHighTemperature }}<i class="wi wi-degrees"></i></strong>
+      </p>
+      <div class="divider"></div>
+      <p class="low">
+        Low: <strong>{{ shortTermForecast.forecastLowTemperature }}<i class="wi wi-degrees"></i></strong>
+      </p>
+    </div>
+    <ng-template #tonight>
+      <div class="cell small-3 forecast-temperatures">
         <p class="low">
           Low: <strong>{{ shortTermForecast.forecastLowTemperature }}<i class="wi wi-degrees"></i></strong>
         </p>
+        <div class="divider"></div>
+        <p class="high">
+          High: <strong>{{ shortTermForecast.forecastHighTemperature }}<i class="wi wi-degrees"></i></strong>
+        </p>
       </div>
-      <ng-template #tonight>
-        <div class="cell small-3 forecast-temperatures">
-          <p class="low">
-            Low: <strong>{{ shortTermForecast.forecastLowTemperature }}<i class="wi wi-degrees"></i></strong>
-          </p>
-          <div class="divider"></div>
-          <p class="high">
-            High: <strong>{{ shortTermForecast.forecastHighTemperature }}<i class="wi wi-degrees"></i></strong>
-          </p>
-        </div>
-      </ng-template>
-    </div>
+    </ng-template>
+  </div>
 
+  <!-- <mat-card-content class="grid-y align-justify">
     <div class="grid-x align-center padding-bottom-3">
       <div class="cell auto other-obs type">
         <p>Wind:</p>
@@ -90,7 +75,7 @@
         {{ shortTermForecast.shortTermForecastDetails }}
       </p>
     </div>
-  </mat-card-content>
+  </mat-card-content> -->
 </div>
 
 <div class="weather-observations"

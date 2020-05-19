@@ -1,25 +1,19 @@
-.mat-card {
-  color: #616161;
-  height: 300px;
-
-  &.graph,
-  &.weather {
-    margin-bottom: 16px;
-  }
+.page-header,
+.date,
+.location {
+  display: flex;
 }
 
 .page-header {
-  display: flex;
   flex-direction: column;
+  padding-top: 2rem;
 
-  > .mat-card-subtitle {
-    display: flex;
-    justify-content: space-between;
+  > .date,
+  > .location {
+    justify-content: center;
   }
 
-  > .mat-card-title {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
+  > .location {
+    font-size: 14px;
   }
 }

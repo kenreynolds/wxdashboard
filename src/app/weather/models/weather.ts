@@ -1,4 +1,5 @@
 export interface CurrentObservations {
+  currentDate: string;
   observedHumidity: string;
   observedPressure: string;
   observedSkyCondition: string;

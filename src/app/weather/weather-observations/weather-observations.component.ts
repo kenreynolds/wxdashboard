@@ -12,7 +12,7 @@ import * as weatherUtils from '../weather-utils';
 })
 export class WeatherObservationsComponent implements OnInit {
   /* TODO:
-   * Add heat index logic to latest obs card
+   * Add heat index logic
    * Add code to enable selection of another city
    */
   error: string;
@@ -65,24 +65,19 @@ export class WeatherObservationsComponent implements OnInit {
           const baseForecastUrl = this.wxForecast.properties.periods;
           this.hasShortTermForecastData = true;
 
+          this.isTonight = false;
+          this.shortTermForecast = {
+            forecastHighTemperature: baseForecastUrl[0].temperature,
+            forecastLowTemperature: baseForecastUrl[1].temperature,
+            shortTermForecastDetails: baseForecastUrl[0].shortForecast,
+            shortTermForecastLowTemperature: baseForecastUrl[0].temperature,
+            shortTermForecastPeriod: baseForecastUrl[0].name,
+          }
+
           if (baseForecastUrl[0].name === 'Tonight') {
             this.isTonight = true;
-            this.shortTermForecast = {
-              forecastHighTemperature: baseForecastUrl[1].temperature,
-              forecastLowTemperature: baseForecastUrl[0].temperature,
-              shortTermForecastDetails: baseForecastUrl[0].shortForecast,
-              shortTermForecastLowTemperature: baseForecastUrl[0].temperature,
-              shortTermForecastPeriod: baseForecastUrl[0].name,
-            }
-          } else {
-            this.isTonight = false;
-            this.shortTermForecast = {
-              forecastHighTemperature: baseForecastUrl[0].temperature,
-              forecastLowTemperature: baseForecastUrl[1].temperature,
-              shortTermForecastDetails: baseForecastUrl[0].shortForecast,
-              shortTermForecastLowTemperature: baseForecastUrl[0].temperature,
-              shortTermForecastPeriod: baseForecastUrl[0].name,
-            }
+            this.shortTermForecast.forecastHighTemperature = baseForecastUrl[1].temperature;
+            this.shortTermForecast.forecastLowTemperature = baseForecastUrl[0].temperature;
           }
         }
       });
@@ -92,20 +87,20 @@ export class WeatherObservationsComponent implements OnInit {
     this.weatherService
       .getWxLocationData(url)
       .subscribe(wxLocationData => {
-        this.wxLocationInfo = wxLocationData;
         console.log('WX location data:');
         console.log(this.wxLocationInfo);
+        this.wxLocationInfo = wxLocationData;
 
         if (this.wxLocationInfo) {
-          this.isLoading = false;
           console.log('Location data loaded.');
-
           const baseLocationUrl = this.wxLocationInfo.properties.relativeLocation.properties;
+          this.isLoading = false;
           this.locationName = baseLocationUrl.city;
           this.state = baseLocationUrl.state;
         } else {
           this.isLoading = false;
           this.currentObservations = {
+            currentDate: '--',
             observedHumidity: '--',
             observedPressure: '--',
             observedSkyCondition: '--',
@@ -130,9 +125,9 @@ export class WeatherObservationsComponent implements OnInit {
     this.weatherService
       .getWxObservationsData()
       .subscribe(wxObservationData => {
-          this.wxObservations = wxObservationData;
-          console.log('WX Observations:');
-          console.log(this.wxObservations);
+        console.log('WX Observations:');
+        console.log(this.wxObservations);
+        this.wxObservations = wxObservationData;
 
           if (this.wxObservations) {
             console.log('Weather data loaded.');
@@ -148,6 +143,7 @@ export class WeatherObservationsComponent implements OnInit {
             }
 
             this.currentObservations = {
+              currentDate: moment().format('dddd, MMMM D, YYYY'),
               observedHumidity: `${Math.floor(baseObservationsUrl.relativeHumidity.value)}%`,
               observedPressure: `${Math.floor(weatherUtils.convertPascalsToMillibar(baseObservationsUrl.barometricPressure.value))} mb`,
               observedSkyCondition: baseObservationsUrl.textDescription,
