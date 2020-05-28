@@ -54,7 +54,7 @@ export class WeatherObservationsComponent implements OnInit {
     }
   }
 
-  getWxShortTermForecast() {
+  getWxShortTermForecast(): void {
     this.weatherService
       .getWxForecastData()
       .subscribe(wxForecastData => {
@@ -272,58 +272,37 @@ export class WeatherObservationsComponent implements OnInit {
         this.currentObservations.observedWindDirection >= 0 && this.currentObservations.observedWindDirection <= 10
         || this.currentObservations.observedWindDirection > 350 && this.currentObservations.observedWindDirection <= 360
       ) {
-        this.currentObservations.observedWindDirection = 'N'
+        return {
+          'wi-direction-down': true
+        };
       } else if (this.currentObservations.observedWindDirection > 10 && this.currentObservations.observedWindDirection <= 80) {
-        this.currentObservations.observedWindDirection = 'NE';
+        return {
+          'wi-direction-down-left': true
+        };
       } else if (this.currentObservations.observedWindDirection > 80 && this.currentObservations.observedWindDirection <= 100) {
-        this.currentObservations.observedWindDirection = 'E';
+        return {
+          'wi-direction-left': true
+        };
       } else if (this.currentObservations.observedWindDirection > 100 && this.currentObservations.observedWindDirection <= 170) {
-        this.currentObservations.observedWindDirection = 'SE';
+        return {
+          'wi-direction-up-left': true
+        };
       } else if (this.currentObservations.observedWindDirection > 170 && this.currentObservations.observedWindDirection <= 190) {
-        this.currentObservations.observedWindDirection = 'S';
+        return {
+          'wi-direction-up': true
+        };
       } else if (this.currentObservations.observedWindDirection > 190 && this.currentObservations.observedWindDirection <= 260) {
-        this.currentObservations.observedWindDirection = 'SW';
+        return {
+          'wi-direction-up-right': true
+        };
       } else if (this.currentObservations.observedWindDirection > 260 && this.currentObservations.observedWindDirection <= 280) {
-        this.currentObservations.observedWindDirection = 'W';
+        return {
+          'wi-direction-right': true
+        };
       } else if (this.currentObservations.observedWindDirection > 280 && this.currentObservations.observedWindDirection <= 350) {
-        this.currentObservations.observedWindDirection = 'NW';
-      }
-
-      switch (this.currentObservations.observedWindDirection) {
-        case 'N':
-          return {
-            'wi-direction-down': true
-          };
-        case 'NE':
-          return {
-            'wi-direction-down-left': true
-          };
-        case 'E':
-          return {
-            'wi-direction-left': true
-          };
-        case 'SE':
-          return {
-            'wi-direction-up-left': true
-          };
-        case 'S':
-          return {
-            'wi-direction-up': true
-          };
-        case 'SW':
-          return {
-            'wi-direction-up-right': true
-          };
-        case 'W':
-          return {
-            'wi-direction-right': true
-          };
-        case 'NW':
-          return {
-            'wi-direction-down-right': true
-          };
-        default:
-          break;
+        return {
+          'wi-direction-down-right': true
+        };
       }
     }
   }
