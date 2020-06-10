@@ -26,11 +26,6 @@
     display: flex;
   }
 
-  .forecast-temperatures,
-  .other-obs {
-    flex-direction: column;
-  }
-
   > .alert {
     background-color: #F8BBD0;
     border-radius: 2px;
@@ -68,26 +63,28 @@
   }
 
   .forecast-temperatures {
-    height: 75px;
     justify-content: center;
+    margin-top: 2rem;
 
     .high,
     .low {
       display: flex;
       font-size: 1rem;
       justify-content: space-between;
-      padding: 0 .3rem;
+      margin: 0;
+      padding: 0 .5rem;
+
+      > .temp {
+        margin-left: .25rem;
+      }
     }
 
     .high {
       color: #f57c00;
-      margin-bottom: .25rem;
     }
 
     .low {
       color: #2196f3;
-      margin-bottom: 0;
-      margin-top: .25rem;
     }
   }
 
@@ -106,6 +103,7 @@
   .other-obs {
     color: #5C6BC0;
     display: flex;
+    flex-direction: column;
     height: 120px;
     justify-content: space-around;
     padding-bottom: .5rem;

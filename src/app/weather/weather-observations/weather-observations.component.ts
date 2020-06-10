@@ -13,6 +13,7 @@ import * as weatherUtils from '../weather-utils';
 export class WeatherObservationsComponent implements OnInit {
   /* TODO:
    * Add heat index logic
+   * Add logic to change forecast temp colors for very hot and very cold temps
    * Add code to enable selection of another city
    */
   error: string;
