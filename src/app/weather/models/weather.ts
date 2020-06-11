@@ -1,5 +1,6 @@
 export interface CurrentObservations {
   currentDate: string;
+  observedHeatIndex: string;
   observedHumidity: string;
   observedPressure: string;
   observedSkyCondition: string;
@@ -12,9 +13,9 @@ export interface CurrentObservations {
 }
 
 export interface ShortTermForecast {
-  forecastHighTemperature: string;
-  forecastLowTemperature: string;
+  forecastHighTemperature: number | string;
+  forecastLowTemperature: number | string;
   shortTermForecastDetails: string;
-  shortTermForecastLowTemperature: string;
+  shortTermForecastLowTemperature: number | string;
   shortTermForecastPeriod: string;
 }

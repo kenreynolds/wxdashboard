@@ -48,6 +48,16 @@
     flex-direction: column;
     justify-content: center;
 
+    > .heat-index,
+    > .wind-chill {
+      font-size: 1rem;
+      margin-top: -1.25rem;
+    }
+
+    > .heat-index {
+      color: #C2185B;
+    }
+
     > .temperature {
       font-size: 4rem;
       margin-bottom: 0;
@@ -55,6 +65,10 @@
 
     > .wi {
       font-size: 5rem;
+    }
+
+    > .wind-chill {
+      color: #9C27B0;
     }
   }
 
@@ -80,17 +94,36 @@
     }
 
     .high {
-      color: #f57c00;
+      &.warm {
+        color: #f57c00;
+      }
+
+      &.hot {
+        color: #D32F2F;
+      }
+
+      &.sweltering {
+        color: #C2185B;
+      }
     }
 
     .low {
-      color: #2196f3;
-    }
-  }
+      &.mild {
+        color: #4CAF50;
+      }
 
-  .wind-chill {
-    font-size: 1rem;
-    margin-top: -1.5rem;
+      &.cool {
+        color: #2196f3;
+      }
+
+      &.cold {
+        color: #3F51B5;
+      }
+
+      &.frigid {
+        color: #9C27B0;
+      }
+    }
   }
 
   .observation-time {

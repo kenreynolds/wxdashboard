@@ -15,25 +15,31 @@
       <span class="temperature">
         {{ currentObservations.observedTemperature }}<i class="wi wi-degrees"></i>
       </span>
+      <span class="heat-index" *ngIf="hasHeatIndex">
+        Heat index: {{ currentObservations.observedHeatIndex }}<i class="wi wi-degrees"></i>
+      </span>
+      <span class="wind-chill" *ngIf="hasWindChill">
+        Wind chill: {{ currentObservations.observedWindChill }}<i class="wi wi-degrees"></i>
+      </span>
     </div>
   </div>
 
   <div class="grid-x align-center padding-bottom-3">
     <div class="cell forecast-temperatures"
       *ngIf="!isTonight; else tonight">
-      <p class="high">
+      <p class="high" [ngClass]="showHighTempColor()">
         High: <span class="temp">{{ shortTermForecast.forecastHighTemperature }}<i class="wi wi-degrees"></i></span>
       </p>
-      <p class="low">
+      <p class="low" [ngClass]="showLowTempColor()">
         Low: <span class="temp">{{ shortTermForecast.forecastLowTemperature }}<i class="wi wi-degrees"></i></span>
       </p>
     </div>
     <ng-template #tonight>
-      <div class="cell small-3 forecast-temperatures">
-        <p class="low">
+      <div class="cell forecast-temperatures">
+        <p class="low" [ngClass]="showLowTempColor()">
           Low: <span class="temp">{{ shortTermForecast.forecastLowTemperature }}<i class="wi wi-degrees"></i></span>
         </p>
-        <p class="high">
+        <p class="high" [ngClass]="showHighTempColor()">
           High: <span class="temp">{{ shortTermForecast.forecastHighTemperature }}<i class="wi wi-degrees"></i></span>
         </p>
       </div>
