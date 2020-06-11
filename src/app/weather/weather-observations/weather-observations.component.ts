@@ -12,10 +12,11 @@ import * as weatherUtils from '../weather-utils';
 })
 export class WeatherObservationsComponent implements OnInit {
   /* TODO:
-   * Add heat index logic
    * Add code to enable selection of another city
    */
   error: string;
+  hasHeatIndex: boolean;
+  hasWindChill: boolean;
   isDaytime: boolean;
   isLoading: boolean;
   isTonight: boolean;
@@ -101,6 +102,7 @@ export class WeatherObservationsComponent implements OnInit {
           this.isLoading = false;
           this.currentObservations = {
             currentDate: '--',
+            observedHeatIndex: '--',
             observedHumidity: '--',
             observedPressure: '--',
             observedSkyCondition: '--',
@@ -132,18 +134,34 @@ export class WeatherObservationsComponent implements OnInit {
           if (this.wxObservations) {
             console.log('Weather data loaded.');
             const baseObservationsUrl = this.wxObservations.properties;
+            let heatIndexValue: string;
             let windChillValue: string;
 
             this.hasWxData = true;
 
+            if (baseObservationsUrl.heatIndex.value === null) {
+              this.hasHeatIndex = false;
+              this.hasWindChill = false;
+              heatIndexValue = null;
+            } else {
+              this.hasHeatIndex = true;
+              this.hasWindChill = false;
+              heatIndexValue = Math.floor(weatherUtils.convertCelsiusToFahrenheit(baseObservationsUrl.heatIndex.value)).toString();
+            }
+
             if (baseObservationsUrl.windChill.value === null) {
+              this.hasHeatIndex = false;
+              this.hasWindChill = false;
               windChillValue = null;
             } else {
+              this.hasHeatIndex = false;
+              this.hasWindChill = true;
               windChillValue = Math.floor(weatherUtils.convertCelsiusToFahrenheit(baseObservationsUrl.windChill.value)).toString();
             }
 
             this.currentObservations = {
               currentDate: moment().format('dddd, MMMM D, YYYY'),
+              observedHeatIndex: heatIndexValue,
               observedHumidity: `${Math.floor(baseObservationsUrl.relativeHumidity.value)}%`,
               observedPressure: `${Math.floor(weatherUtils.convertPascalsToMillibar(baseObservationsUrl.barometricPressure.value))} mb`,
               observedSkyCondition: baseObservationsUrl.textDescription,
@@ -260,6 +278,42 @@ export class WeatherObservationsComponent implements OnInit {
           return {
             'wi-fog': true
           };
+      }
+    }
+  }
+
+  showHighTempColor() {
+    if (this.shortTermForecast.forecastHighTemperature > 69 && this.shortTermForecast.forecastHighTemperature < 90) {
+      return {
+        'warm': true
+      }
+    } else if (this.shortTermForecast.forecastHighTemperature > 89 && this.shortTermForecast.forecastHighTemperature < 100) {
+      return {
+        'hot': true
+      }
+    } else if (this.shortTermForecast.forecastHighTemperature > 99) {
+      return {
+        'sweltering': true
+      }
+    }
+  }
+
+  showLowTempColor() {
+    if (this.shortTermForecast.forecastLowTemperature > 59 && this.shortTermForecast.forecastLowTemperature < 70) {
+      return {
+        'mild': true
+      }
+    } else if (this.shortTermForecast.forecastLowTemperature > 39 && this.shortTermForecast.forecastLowTemperature < 60) {
+      return {
+        'cool': true
+      }
+    } else if (this.shortTermForecast.forecastLowTemperature > 19 && this.shortTermForecast.forecastLowTemperature < 40) {
+      return {
+        'cold': true
+      }
+    } else if (this.shortTermForecast.forecastLowTemperature < 19) {
+      return {
+        'frigid': true
       }
     }
   }

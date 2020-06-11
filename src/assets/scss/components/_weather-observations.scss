@@ -26,11 +26,6 @@
     display: flex;
   }
 
-  .forecast-temperatures,
-  .other-obs {
-    flex-direction: column;
-  }
-
   > .alert {
     background-color: #F8BBD0;
     border-radius: 2px;
@@ -53,6 +48,16 @@
     flex-direction: column;
     justify-content: center;
 
+    > .heat-index,
+    > .wind-chill {
+      font-size: 1rem;
+      margin-top: -1.25rem;
+    }
+
+    > .heat-index {
+      color: #C2185B;
+    }
+
     > .temperature {
       font-size: 4rem;
       margin-bottom: 0;
@@ -61,6 +66,10 @@
     > .wi {
       font-size: 5rem;
     }
+
+    > .wind-chill {
+      color: #9C27B0;
+    }
   }
 
   .divider {
@@ -68,32 +77,53 @@
   }
 
   .forecast-temperatures {
-    height: 75px;
     justify-content: center;
+    margin-top: 2rem;
 
     .high,
     .low {
       display: flex;
       font-size: 1rem;
       justify-content: space-between;
-      padding: 0 .3rem;
+      margin: 0;
+      padding: 0 .5rem;
+
+      > .temp {
+        margin-left: .25rem;
+      }
     }
 
     .high {
-      color: #f57c00;
-      margin-bottom: .25rem;
+      &.warm {
+        color: #f57c00;
+      }
+
+      &.hot {
+        color: #D32F2F;
+      }
+
+      &.sweltering {
+        color: #C2185B;
+      }
     }
 
     .low {
-      color: #2196f3;
-      margin-bottom: 0;
-      margin-top: .25rem;
-    }
-  }
+      &.mild {
+        color: #4CAF50;
+      }
 
-  .wind-chill {
-    font-size: 1rem;
-    margin-top: -1.5rem;
+      &.cool {
+        color: #2196f3;
+      }
+
+      &.cold {
+        color: #3F51B5;
+      }
+
+      &.frigid {
+        color: #9C27B0;
+      }
+    }
   }
 
   .observation-time {
@@ -106,6 +136,7 @@
   .other-obs {
     color: #5C6BC0;
     display: flex;
+    flex-direction: column;
     height: 120px;
     justify-content: space-around;
     padding-bottom: .5rem;

@@ -15,28 +15,32 @@
       <span class="temperature">
         {{ currentObservations.observedTemperature }}<i class="wi wi-degrees"></i>
       </span>
+      <span class="heat-index" *ngIf="hasHeatIndex">
+        Heat index: {{ currentObservations.observedHeatIndex }}<i class="wi wi-degrees"></i>
+      </span>
+      <span class="wind-chill" *ngIf="hasWindChill">
+        Wind chill: {{ currentObservations.observedWindChill }}<i class="wi wi-degrees"></i>
+      </span>
     </div>
   </div>
 
   <div class="grid-x align-center padding-bottom-3">
     <div class="cell forecast-temperatures"
       *ngIf="!isTonight; else tonight">
-      <p class="high">
-        High: <strong>{{ shortTermForecast.forecastHighTemperature }}<i class="wi wi-degrees"></i></strong>
+      <p class="high" [ngClass]="showHighTempColor()">
+        High: <span class="temp">{{ shortTermForecast.forecastHighTemperature }}<i class="wi wi-degrees"></i></span>
       </p>
-      <div class="divider"></div>
-      <p class="low">
-        Low: <strong>{{ shortTermForecast.forecastLowTemperature }}<i class="wi wi-degrees"></i></strong>
+      <p class="low" [ngClass]="showLowTempColor()">
+        Low: <span class="temp">{{ shortTermForecast.forecastLowTemperature }}<i class="wi wi-degrees"></i></span>
       </p>
     </div>
     <ng-template #tonight>
-      <div class="cell small-3 forecast-temperatures">
-        <p class="low">
-          Low: <strong>{{ shortTermForecast.forecastLowTemperature }}<i class="wi wi-degrees"></i></strong>
+      <div class="cell forecast-temperatures">
+        <p class="low" [ngClass]="showLowTempColor()">
+          Low: <span class="temp">{{ shortTermForecast.forecastLowTemperature }}<i class="wi wi-degrees"></i></span>
         </p>
-        <div class="divider"></div>
-        <p class="high">
-          High: <strong>{{ shortTermForecast.forecastHighTemperature }}<i class="wi wi-degrees"></i></strong>
+        <p class="high" [ngClass]="showHighTempColor()">
+          High: <span class="temp">{{ shortTermForecast.forecastHighTemperature }}<i class="wi wi-degrees"></i></span>
         </p>
       </div>
     </ng-template>
