@@ -18,6 +18,8 @@ import { TemperatureGraphComponent } from './temperature-graph/temperature-graph
 import { WeatherAlertsComponent } from './weather-alerts/weather-alerts.component';
 import { WeatherAlertDialogComponent } from './weather-alert-dialog/weather-alert-dialog.component';
 import { WeatherObservationsComponent } from './weather-observations/weather-observations.component';
+import { StoreModule } from '@ngrx/store';
+import * as fromWeatherState from './store';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,7 @@ import { WeatherObservationsComponent } from './weather-observations/weather-obs
     MatSidenavModule,
     MatToolbarModule,
     MatTooltipModule,
+    StoreModule.forFeature(fromWeatherState.weatherStateFeatureKey, fromWeatherState.reducers, { metaReducers: fromWeatherState.metaReducers }),
   ],
   exports: [
     TemperatureGraphComponent,

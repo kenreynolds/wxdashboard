@@ -13,16 +13,21 @@ import {
 import { AppRoutingModule } from './app-routing.module';
 import { WeatherModule } from './weather/weather.module';
 
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './reducers';
+
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './shared/layout/dashboard/dashboard.component';
+import { FooterComponent } from './shared/layout/footer/footer.component';
 import { HeaderComponent } from './shared/layout/header/header.component';
 import { SidebarComponent } from './shared/layout/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
     DashboardComponent,
+    FooterComponent,
+    HeaderComponent,
     SidebarComponent,
   ],
   imports: [
@@ -35,6 +40,13 @@ import { SidebarComponent } from './shared/layout/sidebar/sidebar.component';
     MatSidenavModule,
     MatToolbarModule,
     WeatherModule,
+    StoreModule.forRoot(reducers, {
+      metaReducers,
+      runtimeChecks: {
+        strictStateImmutability: true,
+        strictActionImmutability: true
+      }
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]

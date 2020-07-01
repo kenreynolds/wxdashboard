@@ -133,6 +133,6 @@
   },
   "defaultProject": "wxdashboard",
   "cli": {
-    "defaultCollection": "@schematics/angular"
+    "defaultCollection": "@ngrx/schematics"
   }
 }

@@ -24,7 +24,7 @@
     </div>
   </div>
 
-  <div class="grid-x align-center padding-bottom-4 padding-top-1">
+  <div class="grid-x align-center padding-bottom-4 padding-top-2">
     <div class="cell forecast-temperatures"
       *ngIf="!isTonight; else tonight">
       <p class="high" [ngClass]="showHighTempColor()">
@@ -46,7 +46,8 @@
     </ng-template>
   </div>
 
-  <div class="grid-x align-center padding-bottom-5 padding-top-2">
+  <!-- Other observations -->
+  <!-- <div class="grid-x align-center padding-bottom-5 padding-top-2">
     <div class="cell small-6 other-obs">
       <span class="type">Wind:</span>
       <span class="type">Visibility:</span>
@@ -61,8 +62,9 @@
         <span class="value">{{ currentObservations.observedHumidity }}</span>
         <span class="value">{{ currentObservations.observedPressure }}</span>
     </div>
-  </div>
+  </div> -->
 
+  <!-- Short term forecast -->
   <!-- <div class="cell short-term-forecast"
     *ngIf="hasShortTermForecastData">
     <p class="data">
