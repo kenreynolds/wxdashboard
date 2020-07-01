@@ -88,8 +88,6 @@ export class WeatherObservationsComponent implements OnInit {
     this.weatherService
       .getWxLocationData(url)
       .subscribe(wxLocationData => {
-        console.log('WX location data:');
-        console.log(this.wxLocationInfo);
         this.wxLocationInfo = wxLocationData;
 
         if (this.wxLocationInfo) {
@@ -127,8 +125,6 @@ export class WeatherObservationsComponent implements OnInit {
     this.weatherService
       .getWxObservationsData()
       .subscribe(wxObservationData => {
-        console.log('WX Observations:');
-        console.log(this.wxObservations);
         this.wxObservations = wxObservationData;
 
           if (this.wxObservations) {
@@ -139,21 +135,13 @@ export class WeatherObservationsComponent implements OnInit {
 
             this.hasWxData = true;
 
-            if (baseObservationsUrl.heatIndex.value === null) {
-              this.hasHeatIndex = false;
-              this.hasWindChill = false;
-              heatIndexValue = null;
-            } else {
+            if (baseObservationsUrl.heatIndex.value !== null) {
               this.hasHeatIndex = true;
               this.hasWindChill = false;
               heatIndexValue = Math.floor(weatherUtils.convertCelsiusToFahrenheit(baseObservationsUrl.heatIndex.value)).toString();
             }
 
-            if (baseObservationsUrl.windChill.value === null) {
-              this.hasHeatIndex = false;
-              this.hasWindChill = false;
-              windChillValue = null;
-            } else {
+            if (baseObservationsUrl.windChill.value !== null) {
               this.hasHeatIndex = false;
               this.hasWindChill = true;
               windChillValue = Math.floor(weatherUtils.convertCelsiusToFahrenheit(baseObservationsUrl.windChill.value)).toString();
