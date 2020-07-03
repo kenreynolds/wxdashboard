@@ -15,7 +15,7 @@
       <span class="temperature">
         {{ currentObservations.observedTemperature }}<i class="wi wi-degrees"></i>
       </span>
-      <span class="heat-index" *ngIf="hasHeatIndex">
+      <span class="heat-index" *ngIf="hasHeatIndex && currentObservations.observedHeatIndex >= '90'">
         Heat index: {{ currentObservations.observedHeatIndex }}<i class="wi wi-degrees"></i>
       </span>
       <span class="wind-chill" *ngIf="hasWindChill">
