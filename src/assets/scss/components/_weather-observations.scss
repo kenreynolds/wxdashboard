@@ -6,6 +6,8 @@
   color: #1A237E;
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  width: 100vw;
 
   .conditions,
   .forecast-temperatures {
@@ -40,7 +42,6 @@
       color: white;
       font-size: 1rem;
       font-weight: bold;
-      margin-top: .5rem;
       padding: .25rem 1rem;
     }
 

@@ -3,7 +3,7 @@
   [ngClass]="showIsLoading()"
   *ngIf="hasWxData">
 
-  <div class="page-header padding-bottom-4">
+  <div class="page-header padding-bottom-3 padding-top-4">
     <div class="date">{{ currentObservations.currentDate }}</div>
     <div class="observation-time">{{ currentObservations.observationTime }}</div>
     <div class="location">{{ locationName }}, {{ state }}</div>
@@ -15,7 +15,7 @@
       <span class="temperature">
         {{ currentObservations.observedTemperature }}<i class="wi wi-degrees"></i>
       </span>
-      <span class="heat-index" *ngIf="hasHeatIndex && currentObservations.observedHeatIndex >= '90'">
+      <span class="heat-index" *ngIf="hasHeatIndex">
         Heat index: {{ currentObservations.observedHeatIndex }}<i class="wi wi-degrees"></i>
       </span>
       <span class="wind-chill" *ngIf="hasWindChill">
@@ -24,7 +24,7 @@
     </div>
   </div>
 
-  <div class="grid-x align-center padding-bottom-4 padding-top-2">
+  <div class="grid-x align-center padding-top-5">
     <div class="cell forecast-temperatures"
       *ngIf="!isTonight; else tonight">
       <p class="high" [ngClass]="showHighTempColor()">
@@ -64,15 +64,7 @@
     </div>
   </div> -->
 
-  <!-- Short term forecast -->
-  <!-- <div class="cell short-term-forecast"
-    *ngIf="hasShortTermForecastData">
-    <p class="data">
-      <strong>{{ shortTermForecast.shortTermForecastPeriod }}</strong>:
-      {{ shortTermForecast.shortTermForecastLowTemperature }}<i class="wi wi-degrees"></i>&nbsp;-&nbsp;
-      {{ shortTermForecast.shortTermForecastDetails }}
-    </p>
-  </div> -->
+  <app-weather-forecast></app-weather-forecast>
 </div>
 
 <div class="weather-observations"

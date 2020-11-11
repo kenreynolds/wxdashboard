@@ -18,6 +18,7 @@ import { TemperatureGraphComponent } from './temperature-graph/temperature-graph
 import { WeatherAlertsComponent } from './weather-alerts/weather-alerts.component';
 import { WeatherAlertDialogComponent } from './weather-alert-dialog/weather-alert-dialog.component';
 import { WeatherObservationsComponent } from './weather-observations/weather-observations.component';
+import { WeatherForecastComponent } from './weather-forecast/weather-forecast.component';
 import { StoreModule } from '@ngrx/store';
 import * as fromWeatherState from './store';
 
@@ -27,6 +28,7 @@ import * as fromWeatherState from './store';
     WeatherAlertsComponent,
     WeatherAlertDialogComponent,
     WeatherObservationsComponent,
+    WeatherForecastComponent,
   ],
   imports: [
     CommonModule,
@@ -45,6 +47,7 @@ import * as fromWeatherState from './store';
   exports: [
     TemperatureGraphComponent,
     WeatherAlertsComponent,
+    WeatherForecastComponent,
     WeatherObservationsComponent,
   ],
   entryComponents: [WeatherAlertDialogComponent]

@@ -1,0 +1,9 @@
+.weather-forecast {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+
+  > .forecast-day {
+    flex-direction: row;
+  }
+}
