@@ -30,10 +30,10 @@ export class TemperatureGraphComponent implements OnInit {
 
   ngOnInit() {
     this.isLoading = true;
-    this.getWxForecast();
+    // this.getWxForecast();
   }
 
-  getWxForecast(): void {
+  /* getWxForecast(): void {
     this.weatherService
       .getWxForecastData()
       .subscribe(wxForecastData => {
@@ -98,5 +98,5 @@ export class TemperatureGraphComponent implements OnInit {
         loading: true
       };
     }
-  }
+  } */
 }

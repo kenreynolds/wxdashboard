@@ -1,15 +1,15 @@
 export interface CurrentObservations {
-  currentDate: string;
-  observedHeatIndex: string;
-  observedHumidity: string;
-  observedPressure: string;
+  observedFeelsLike: number | string;
+  observedHumidity: number | string;
+  observedLocationName: string;
+  observedPressure: number | string;
+  observedRegion: string;
   observedSkyCondition: string;
-  observedTemperature: string;
-  observedVisibility: string;
-  observedWindChill: string;
-  observedWindDirection: string | number;
-  observedWindSpeed: string;
-  observationTime: string;
+  observedTemperature: number | string;
+  observedVisibility: number | string;
+  observedWindDirection: string;
+  observedWindSpeed: number | string;
+  observationDateTime: number | string;
 }
 
 export interface ShortTermForecast {

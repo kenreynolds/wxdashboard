@@ -6,7 +6,6 @@ import { ChartsModule } from 'ng2-charts';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   MatCardModule,
-  MatDialogModule,
   MatDividerModule,
   MatProgressSpinnerModule,
   MatSidenavModule,
@@ -15,8 +14,6 @@ import {
 } from '@angular/material';
 
 import { TemperatureGraphComponent } from './temperature-graph/temperature-graph.component';
-import { WeatherAlertsComponent } from './weather-alerts/weather-alerts.component';
-import { WeatherAlertDialogComponent } from './weather-alert-dialog/weather-alert-dialog.component';
 import { WeatherObservationsComponent } from './weather-observations/weather-observations.component';
 import { WeatherForecastComponent } from './weather-forecast/weather-forecast.component';
 import { StoreModule } from '@ngrx/store';
@@ -25,8 +22,6 @@ import * as fromWeatherState from './store';
 @NgModule({
   declarations: [
     TemperatureGraphComponent,
-    WeatherAlertsComponent,
-    WeatherAlertDialogComponent,
     WeatherObservationsComponent,
     WeatherForecastComponent,
   ],
@@ -36,7 +31,6 @@ import * as fromWeatherState from './store';
     FontAwesomeModule,
     HttpClientModule,
     MatCardModule,
-    MatDialogModule,
     MatDividerModule,
     MatProgressSpinnerModule,
     MatSidenavModule,
@@ -46,10 +40,8 @@ import * as fromWeatherState from './store';
   ],
   exports: [
     TemperatureGraphComponent,
-    WeatherAlertsComponent,
     WeatherForecastComponent,
     WeatherObservationsComponent,
-  ],
-  entryComponents: [WeatherAlertDialogComponent]
+  ]
 })
 export class WeatherModule {}

@@ -2,32 +2,33 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+import { environment } from '../../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class WeatherService {
-  /* TODO:
-   * Pass station ID instead of hard coding
-   */
-  private alertsDataUrl = 'https://api.weather.gov/alerts/active';
-  private forecastUrl = 'https://api.weather.gov/gridpoints/FWD/81,102/forecast';
-  private observationsDataUrl = 'https://api.weather.gov/stations/KGPM/observations/latest';
 
   constructor(private http: HttpClient) { }
 
-  getWxAlertsData(): Observable<any> {
-    return this.http.get(this.alertsDataUrl);
+  getCurrentLocation(): Promise<any> {
+    if (navigator.geolocation) {
+      return new Promise((resolve, reject) => {
+        navigator.geolocation.watchPosition(position => {
+          resolve({
+            lat: position.coords.latitude,
+            lon: position.coords.longitude
+          });
+        }, err => {
+            reject(err);
+        });
+      });
+    } else {
+      console.log('Your browser does not support geolocation at this time.');
+    }
   }
 
-  getWxLocationData(url): Observable<any> {
-    return this.http.get(url);
-  }
-
-  getWxForecastData(): Observable<any> {
-    return this.http.get(this.forecastUrl);
-  }
-
-  getWxObservationsData(): Observable<any> {
-    return this.http.get(this.observationsDataUrl);
+  getWxObservationsData(lat, lon): Observable<any> {
+    return this.http.get(`${environment.weatherApiUrl}?key=${environment.weatherApiKey}&q=${lat},${lon}`);
   }
 }

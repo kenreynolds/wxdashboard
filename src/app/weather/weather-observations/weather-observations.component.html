@@ -1,75 +1,52 @@
-<mat-spinner *ngIf="isLoading && !error" diameter="50"></mat-spinner>
-<div class="weather-observations"
-  [ngClass]="showIsLoading()"
-  *ngIf="hasWxData">
+<div class="page">
+  <mat-spinner *ngIf="isLoading && !error" diameter="50"></mat-spinner>
+  <div class="weather-observations"
+    [ngClass]="showIsLoading()"
+    *ngIf="hasWxData">
 
-  <div class="page-header padding-bottom-3 padding-top-4">
-    <div class="date">{{ currentObservations.currentDate }}</div>
-    <div class="observation-time">{{ currentObservations.observationTime }}</div>
-    <div class="location">{{ locationName }}, {{ state }}</div>
-  </div>
-
-  <div class="grid-x align-center">
-    <div class="cell conditions">
-      <i class="wi" [ngClass]="showSkyConditionIcon()"></i>
-      <span class="temperature">
-        {{ currentObservations.observedTemperature }}<i class="wi wi-degrees"></i>
-      </span>
-      <span class="heat-index" *ngIf="hasHeatIndex">
-        Heat index: {{ currentObservations.observedHeatIndex }}<i class="wi wi-degrees"></i>
-      </span>
-      <span class="wind-chill" *ngIf="hasWindChill">
-        Wind chill: {{ currentObservations.observedWindChill }}<i class="wi wi-degrees"></i>
-      </span>
+    <div class="page-header padding-bottom-3 padding-top-2">
+      <div class="date">{{ currentObservations.observationDateTime | date: 'longDate' }}</div>
+      <div class="observation-time">{{ currentObservations.observationDateTime | date: 'shortTime' }}</div>
+      <div class="location">{{ currentObservations.observedLocationName }}, {{ currentObservations.observedRegion }}</div>
     </div>
-  </div>
 
-  <div class="grid-x align-center padding-top-5">
-    <div class="cell forecast-temperatures"
-      *ngIf="!isTonight; else tonight">
-      <p class="high" [ngClass]="showHighTempColor()">
-        High: <span class="temp">{{ shortTermForecast.forecastHighTemperature }}<i class="wi wi-degrees"></i></span>
-      </p>
-      <p class="low" [ngClass]="showLowTempColor()">
-        Low: <span class="temp">{{ shortTermForecast.forecastLowTemperature }}<i class="wi wi-degrees"></i></span>
-      </p>
-    </div>
-    <ng-template #tonight>
-      <div class="cell forecast-temperatures">
-        <p class="low" [ngClass]="showLowTempColor()">
-          Low: <span class="temp">{{ shortTermForecast.forecastLowTemperature }}<i class="wi wi-degrees"></i></span>
-        </p>
-        <p class="high" [ngClass]="showHighTempColor()">
-          High: <span class="temp">{{ shortTermForecast.forecastHighTemperature }}<i class="wi wi-degrees"></i></span>
-        </p>
-      </div>
-    </ng-template>
-  </div>
-
-  <!-- Other observations -->
-  <!-- <div class="grid-x align-center padding-bottom-5 padding-top-2">
-    <div class="cell small-6 other-obs">
-      <span class="type">Wind:</span>
-      <span class="type">Visibility:</span>
-      <span class="type">Humidity:</span>
-      <span class="type">Pressure:</span>
-    </div>
-    <div class="cell small-6 other-obs">
-        <span class="value">
-          {{ currentObservations.observedWindSpeed }}<i class="wi" [ngClass]="showWindDirectionIcon()"></i>
+    <div class="align-center">
+      <div class="conditions">
+        <i class="wi" [ngClass]="showSkyConditionIcon()"></i>
+        <span class="temperature">
+          {{ currentObservations.observedTemperature }}<i class="wi wi-degrees"></i>
         </span>
-        <span class="value">{{ currentObservations.observedVisibility }}</span>
+        <span class="heat-index" *ngIf="hasFeelsLike && isHeatIndex">
+          Heat index: {{ currentObservations.observedFeelsLike }}<i class="wi wi-degrees"></i>
+        </span>
+        <span class="wind-chill" *ngIf="hasFeelsLike && isWindChill">
+          Wind chill: {{ currentObservations.observedFeelsLike }}<i class="wi wi-degrees"></i>
+        </span>
+      </div>
+    </div>
+
+    <!-- Other observations -->
+    <div class="align-center padding-bottom-5 padding-top-2">
+      <div class="other-obs">
+        <span class="type">Humidity:</span>
+        <span class="type">Wind:</span>
+        <span class="type">Pressure:</span>
+      </div>
+      <div class="other-obs">
         <span class="value">{{ currentObservations.observedHumidity }}</span>
+        <span class="value">{{ currentObservations.observedWindDirection }} {{ currentObservations.observedWindSpeed }}</span>
         <span class="value">{{ currentObservations.observedPressure }}</span>
+      </div>
+    </div>
+
+    <app-weather-forecast></app-weather-forecast>
+  </div>
+
+  <!-- TODO: Remove callout & alert classes and refactor -->
+  <!-- <div class="weather-observations"
+    *ngIf="!hasWxData && error">
+    <div class="callout alert">
+      <p>{{ error }}</p>
     </div>
   </div> -->
-
-  <app-weather-forecast></app-weather-forecast>
-</div>
-
-<div class="weather-observations"
-  *ngIf="!hasWxData && error">
-  <div class="callout alert">
-    <p>{{ error }}</p>
-  </div>
 </div>

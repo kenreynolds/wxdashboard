@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { CurrentObservations, ShortTermForecast } from '../models/weather';
+import { CurrentObservations } from '../models/weather';
 import { WeatherService } from '../services/weather.service';
-
-import * as moment from 'moment';
-import * as weatherUtils from '../weather-utils';
 
 @Component({
   selector: 'app-weather-observations',
@@ -14,174 +11,84 @@ export class WeatherObservationsComponent implements OnInit {
   /* TODO:
    * Add code to enable selection of another city
    */
-  error: string;
-  hasHeatIndex: boolean;
-  hasWindChill: boolean;
-  isDaytime: boolean;
-  isLoading: boolean;
-  isTonight: boolean;
-
-  wxForecast: any = [];
-  shortTermForecast: ShortTermForecast;
-  hasShortTermForecastData: boolean;
-
-  wxLocationInfo: any = [];
-  locationName: string;
-  state: string;
-
   wxObservations: any = [];
+  hasFeelsLike = false;
+  isDaytime = false;
+
   currentObservations: CurrentObservations;
-  forecastPeriod: string;
+  error: string;
   hasWxData: boolean;
+  isHeatIndex: boolean;
+  isLoading: boolean;
+  isWindChill: boolean;
 
   constructor(private weatherService: WeatherService) { }
 
   ngOnInit() {
     this.isLoading = true;
     this.getWxObservations();
-    this.getWxShortTermForecast();
-    this.getIsDaytime();
-  }
-
-  getIsDaytime(): void {
-    const currentHour = new Date().getHours();
-
-    if (currentHour >= 1 && currentHour < 7) {
-      this.isDaytime = false;
-    } else if (currentHour > 7 && currentHour < 18) {
-      this.isDaytime = true;
-    } else if (currentHour > 18 && currentHour <= 24) {
-      this.isDaytime = false;
-    }
-  }
-
-  getWxShortTermForecast(): void {
-    this.weatherService
-      .getWxForecastData()
-      .subscribe(wxForecastData => {
-        this.wxForecast = wxForecastData;
-
-        if (this.wxForecast) {
-          console.log('Short term forecast data loaded.');
-          const baseForecastUrl = this.wxForecast.properties.periods;
-          this.hasShortTermForecastData = true;
-
-          this.isTonight = false;
-          this.shortTermForecast = {
-            forecastHighTemperature: baseForecastUrl[0].temperature,
-            forecastLowTemperature: baseForecastUrl[1].temperature,
-            shortTermForecastDetails: baseForecastUrl[0].shortForecast,
-            shortTermForecastLowTemperature: baseForecastUrl[0].temperature,
-            shortTermForecastPeriod: baseForecastUrl[0].name,
-          }
-
-          if (baseForecastUrl[0].name === 'Tonight') {
-            this.isTonight = true;
-            this.shortTermForecast.forecastHighTemperature = baseForecastUrl[1].temperature;
-            this.shortTermForecast.forecastLowTemperature = baseForecastUrl[0].temperature;
-          }
-        }
-      });
-  }
-
-  getWxForecastLocation(url): void {
-    this.weatherService
-      .getWxLocationData(url)
-      .subscribe(wxLocationData => {
-        this.wxLocationInfo = wxLocationData;
-
-        if (this.wxLocationInfo) {
-          console.log('Location data loaded.');
-          const baseLocationUrl = this.wxLocationInfo.properties.relativeLocation.properties;
-          this.isLoading = false;
-          this.locationName = baseLocationUrl.city;
-          this.state = baseLocationUrl.state;
-        } else {
-          this.isLoading = false;
-          this.currentObservations = {
-            currentDate: '--',
-            observedHeatIndex: '--',
-            observedHumidity: '--',
-            observedPressure: '--',
-            observedSkyCondition: '--',
-            observedTemperature: '--',
-            observedVisibility: '--',
-            observedWindChill: '--',
-            observedWindDirection: '--',
-            observedWindSpeed: '--',
-            observationTime: '--'
-          }
-          this.locationName = '--';
-          this.state = '--';
-        }
-      }, error => {
-        console.log(error);
-        this.error = 'Latest observations are currently unavailable.';
-      });
   }
 
   getWxObservations(): void {
-    this.setCurrentLocation();
-    this.weatherService
-      .getWxObservationsData()
-      .subscribe(wxObservationData => {
-        this.wxObservations = wxObservationData;
+    this.weatherService.getCurrentLocation()
+      .then(pos => {
+        const lat = pos.lat;
+        const lon = pos.lon;
 
-          if (this.wxObservations) {
-            console.log('Weather data loaded.');
-            const baseObservationsUrl = this.wxObservations.properties;
-            let heatIndexValue: string;
-            let windChillValue: string;
+        this.weatherService
+          .getWxObservationsData(lat, lon)
+          .subscribe(wxObservationData => {
+            console.log(`Current coordinates: ${lat}, ${lon}`);
+            this.wxObservations = wxObservationData;
 
-            this.hasWxData = true;
+            if (this.wxObservations) {
+              console.log('Weather data loaded.');
+              const obsLocationUrl = this.wxObservations.location;
+              const currentObsUrl = this.wxObservations.current;
 
-            if (baseObservationsUrl.heatIndex.value !== null) {
-              this.hasHeatIndex = true;
-              this.hasWindChill = false;
-              heatIndexValue = Math.floor(weatherUtils.convertCelsiusToFahrenheit(baseObservationsUrl.heatIndex.value)).toString();
+              this.hasWxData = true;
+              this.isLoading = false;
+              this.currentObservations = {
+                observedFeelsLike: Math.floor(currentObsUrl.feelslike_f),
+                observedHumidity: `${currentObsUrl.humidity}%`,
+                observedLocationName: obsLocationUrl.name,
+                observedPressure: `${currentObsUrl.pressure_mb} mb`,
+                observedRegion: obsLocationUrl.region,
+                observedSkyCondition: currentObsUrl.condition.text,
+                observedTemperature: Math.floor(currentObsUrl.temp_f),
+                observedVisibility: `${currentObsUrl.vis_miles} miles`,
+                observedWindDirection: currentObsUrl.wind_dir,
+                observedWindSpeed: `${Math.floor(currentObsUrl.wind_mph)} mph`,
+                observationDateTime: obsLocationUrl.localtime,
+              }
+
+              if (currentObsUrl.is_day === 1) {
+                this.isDaytime = true;
+              }
+
+              if (this.currentObservations.observedFeelsLike !== this.currentObservations.observedTemperature) {
+                this.hasFeelsLike = true;
+
+                if (this.currentObservations.observedFeelsLike > this.currentObservations.observedTemperature
+                  && this.currentObservations.observedFeelsLike > 80
+                ) {
+                  this.isHeatIndex = true;
+                } else if (this.currentObservations.observedFeelsLike < this.currentObservations.observedTemperature
+                  && this.currentObservations.observedFeelsLike < 40
+                ) {
+                  this.isWindChill = true;
+                }
+              }
+            } else {
+              console.log('No weather data to show.');
+              this.hasWxData = false;
+              this.isLoading = false;
             }
-
-            if (baseObservationsUrl.windChill.value !== null) {
-              this.hasHeatIndex = false;
-              this.hasWindChill = true;
-              windChillValue = Math.floor(weatherUtils.convertCelsiusToFahrenheit(baseObservationsUrl.windChill.value)).toString();
-            }
-
-            this.currentObservations = {
-              currentDate: moment().format('dddd, MMMM D, YYYY'),
-              observedHeatIndex: heatIndexValue,
-              observedHumidity: `${Math.floor(baseObservationsUrl.relativeHumidity.value)}%`,
-              observedPressure: `${Math.floor(weatherUtils.convertPascalsToMillibar(baseObservationsUrl.barometricPressure.value))} mb`,
-              observedSkyCondition: baseObservationsUrl.textDescription,
-              observedTemperature: Math.floor(weatherUtils.convertCelsiusToFahrenheit(baseObservationsUrl.temperature.value)).toString(),
-              observedVisibility: `${Math.floor(weatherUtils.convertMetersToMiles(baseObservationsUrl.visibility.value))} mi`,
-              observedWindChill: windChillValue,
-              observedWindDirection: baseObservationsUrl.windDirection.value,
-              observedWindSpeed: `${Math.floor(weatherUtils.convertMetersPerSecondToMilePerHour(baseObservationsUrl.windSpeed.value))} mph`,
-              observationTime: moment.utc(baseObservationsUrl.timestamp).local().format('LT')
-            }
-          } else {
-            console.log('No weather data to show.');
-            this.hasWxData = false;
-            this.isLoading = false;
-          }
-      }, error => {
-        console.log(error);
-        this.error = 'Latest observations are currently unavailable.';
+          }, error => {
+            console.log(error);
+            this.error = 'Latest observations are currently unavailable.';
+          });
       });
-  }
-
-  setCurrentLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(position => {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-        const wxUrl = `https://api.weather.gov/points/${latitude},${longitude}`;
-        this.getWxForecastLocation(wxUrl);
-      });
-    } else {
-      console.log('Your browser does not support geolocation at this time.');
-    }
   }
 
   showIsLoading() {
@@ -195,82 +102,199 @@ export class WeatherObservationsComponent implements OnInit {
   showSkyConditionIcon() {
     if (this.isDaytime) {
       switch (this.currentObservations.observedSkyCondition) {
-        case 'Clear':
-        case 'Mostly Clear':
         case 'Sunny':
           return {
             'wi-day-sunny': true
           };
-        case 'Partly Cloudy':
-        case 'Mostly Sunny':
-          return {
-            'wi-day-cloudy': true
-          };
-        case 'Mostly Cloudy':
-        case 'Partly Sunny':
-        case 'Cloudy':
-        case 'Overcast':
-          return {
-            'wi-day-sunny-overcast': true
-          };
-        case 'Thunderstorms':
-        case 'Thunderstorms and Rain':
-        case 'Thunderstorms and Rain and Fog/Mist':
-          return {
-            'wi-day-thunderstorm': true
-          };
-        case 'Rain':
-        case 'Light Rain':
-          return {
-            'wi-day-rain': true
-          };
-        case 'Fog':
-        case 'Fog/Mist':
-          return {
-            'wi-day-fog': true
-          };
+          case 'Cloudy':
+            return {
+              'wi-day-cloudy': true
+            };
+          case 'Overcast':
+            return {
+              'wi-day-sunny-overcast': true
+            }
+          case 'Fog':
+          case 'Freezing fog':
+          case 'Mist':
+            return {
+              'wi-day-fog': true
+            }
+          case 'Light drizzle':
+          case 'Light rain':
+          case 'Patchy light drizzle':
+          case 'Patchy light rain':
+            return {
+              'wi-day-sprinkle': true
+            }
+          case 'Light rain shower':
+          case 'Patchy rain possible':
+            return {
+              'wi-day-showers': true
+            }
+          case 'Patchy light rain with thunder':
+            return {
+              'wi-day-storm-showers': true
+            }
+          case 'Thundery outbreaks possible':
+            return {
+              'wi-day-lightning': true
+            }
+          case 'Moderate or heavy rain with thunder':
+            return {
+              'wi-day-thunderstorm': true
+            };
+          case 'Heavy rain':
+          case 'Heavy rain at times':
+          case 'Moderate or heavy rain shower':
+          case 'Moderate rain':
+          case 'Moderate rain at times':
+          case 'Torrential rain shower':
+            return {
+              'wi-day-rain': true
+            };
+          case 'Blowing snow':
+          case 'Blizzard':
+            return {
+              'wi-day-snow-wind': true
+            }
+          case 'Freezing drizzle':
+          case 'Heavy freezing drizzle':
+          case 'Light freezing rain':
+          case 'Moderate or heavy freezing rain':
+          case 'Patchy freezing drizzle possible':
+            return {
+              'wi-day-rain-mix': true
+            }
+          case 'Ice pellets':
+          case 'Light showers of ice pellets':
+          case 'Light sleet':
+          case 'Light sleet showers':
+          case 'Moderate or heavy showers of ice pellets':
+          case 'Moderate or heavy sleet':
+          case 'Moderate or heavy sleet showers':
+          case 'Patchy sleet possible':
+            return {
+              'wi-day-sleet': true
+            }
+          case 'Heavy snow':
+          case 'Light snow':
+          case 'Light snow showers':
+          case 'Moderate snow':
+          case 'Moderate or heavy snow showers':
+          case 'Patchy heavy snow':
+          case 'Patchy light snow':
+          case 'Patchy moderate snow':
+          case 'Patchy snow possible':
+            return {
+              'wi-day-snow': true
+            }
+          case 'Patchy light snow with thunder':
+          case 'Moderate or heavy snow with thunder':
+            return {
+              'wi-day-snow-thunderstorm': true
+            }
       }
     } else {
       switch (this.currentObservations.observedSkyCondition) {
         case 'Clear':
-        case 'Mostly Clear':
-        case 'Sunny':
           return {
             'wi-night-clear': true
           };
-        case 'Partly Cloudy':
-        case 'Mostly Sunny':
+        case 'Partly cloudy':
           return {
             'wi-night-alt-partly-cloudy': true
           };
-        case 'Mostly Cloudy':
-        case 'Partly Sunny':
         case 'Cloudy':
         case 'Overcast':
           return {
-            'wi-cloudy': true
-          };
-        case 'Thunderstorms':
-        case 'Thunderstorms and Rain':
-        case 'Thunderstorms and Rain and Fog/Mist':
-          return {
-            'wi-thunderstorm': true
-          };
-        case 'Rain':
-        case 'Light Rain':
-          return {
-            'wi-rain': true
+            'wi-night-alt-cloudy': true
           };
         case 'Fog':
-        case 'Fog/Mist':
+        case 'Freezing fog':
+        case 'Mist':
           return {
-            'wi-fog': true
+            'wi-night-fog': true
+          }
+        case 'Light drizzle':
+        case 'Light rain':
+        case 'Patchy light drizzle':
+        case 'Patchy light rain':
+          return {
+            'wi-night-alt-sprinkle': true
+          }
+        case 'Light rain shower':
+        case 'Patchy rain possible':
+          return {
+            'wi-night-alt-showers': true
+          }
+        case 'Patchy light rain with thunder':
+          return {
+            'wi-night-alt-storm-showers': true
+          }
+        case 'Thundery outbreaks possible':
+          return {
+            'wi-night-alt-lightning': true
+          }
+        case 'Moderate or heavy rain with thunder':
+          return {
+            'wi-night-alt-thunderstorm': true
           };
+        case 'Heavy rain':
+        case 'Heavy rain at times':
+        case 'Moderate or heavy rain shower':
+        case 'Moderate rain':
+        case 'Moderate rain at times':
+        case 'Torrential rain shower':
+          return {
+            'wi-night-alt-rain': true
+          };
+        case 'Blowing snow':
+        case 'Blizzard':
+          return {
+            'wi-night-alt-snow-wind': true
+          }
+        case 'Freezing drizzle':
+        case 'Heavy freezing drizzle':
+        case 'Light freezing rain':
+        case 'Moderate or heavy freezing rain':
+        case 'Patchy freezing drizzle possible':
+          return {
+            'wi-night-alt-rain-mix': true
+          }
+        case 'Ice pellets':
+        case 'Light showers of ice pellets':
+        case 'Light sleet':
+        case 'Light sleet showers':
+        case 'Moderate or heavy showers of ice pellets':
+        case 'Moderate or heavy sleet':
+        case 'Moderate or heavy sleet showers':
+        case 'Patchy sleet possible':
+          return {
+            'wi-night-alt-sleet': true
+          }
+        case 'Heavy snow':
+        case 'Light snow':
+        case 'Light snow showers':
+        case 'Moderate snow':
+        case 'Moderate or heavy snow showers':
+        case 'Patchy heavy snow':
+        case 'Patchy light snow':
+        case 'Patchy moderate snow':
+        case 'Patchy snow possible':
+          return {
+            'wi-night-alt-snow': true
+          }
+        case 'Patchy light snow with thunder':
+        case 'Moderate or heavy snow with thunder':
+          return {
+            'wi-night-alt-snow-thunderstorm': true
+          }
       }
     }
   }
 
-  showHighTempColor() {
+  /* showHighTempColor() {
     if (this.shortTermForecast.forecastHighTemperature > 69 && this.shortTermForecast.forecastHighTemperature < 90) {
       return {
         'warm': true
@@ -304,48 +328,5 @@ export class WeatherObservationsComponent implements OnInit {
         'frigid': true
       }
     }
-  }
-
-  showWindDirectionIcon() {
-    if (this.currentObservations.observedWindSpeed === '0 mph') {
-      return;
-    } else {
-      if (
-        this.currentObservations.observedWindDirection >= 0 && this.currentObservations.observedWindDirection <= 10
-        || this.currentObservations.observedWindDirection > 350 && this.currentObservations.observedWindDirection <= 360
-      ) {
-        return {
-          'wi-direction-down': true
-        };
-      } else if (this.currentObservations.observedWindDirection > 10 && this.currentObservations.observedWindDirection <= 80) {
-        return {
-          'wi-direction-down-left': true
-        };
-      } else if (this.currentObservations.observedWindDirection > 80 && this.currentObservations.observedWindDirection <= 100) {
-        return {
-          'wi-direction-left': true
-        };
-      } else if (this.currentObservations.observedWindDirection > 100 && this.currentObservations.observedWindDirection <= 170) {
-        return {
-          'wi-direction-up-left': true
-        };
-      } else if (this.currentObservations.observedWindDirection > 170 && this.currentObservations.observedWindDirection <= 190) {
-        return {
-          'wi-direction-up': true
-        };
-      } else if (this.currentObservations.observedWindDirection > 190 && this.currentObservations.observedWindDirection <= 260) {
-        return {
-          'wi-direction-up-right': true
-        };
-      } else if (this.currentObservations.observedWindDirection > 260 && this.currentObservations.observedWindDirection <= 280) {
-        return {
-          'wi-direction-right': true
-        };
-      } else if (this.currentObservations.observedWindDirection > 280 && this.currentObservations.observedWindDirection <= 350) {
-        return {
-          'wi-direction-down-right': true
-        };
-      }
-    }
-  }
+  } */
 }

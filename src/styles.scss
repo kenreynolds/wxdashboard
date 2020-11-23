@@ -1,18 +1,14 @@
-@import './assets/scss/components';
-
-@include foundation-everything;
+// Fonts
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap');
 
 // Weather icons
 @import '../node_modules/weather-icons-npm/css/weather-icons.min.css';
 @import '../node_modules/weather-icons-npm/css/weather-icons-wind.min.css';
 
+// Global styles
+@import './assets/scss/global';
+
 // Custom Angular component styles
-@import './assets/scss/components/header';
-@import './assets/scss/components/sidebar';
-@import './assets/scss/components/footer';
-@import './assets/scss/components/dashboard';
-@import './assets/scss/components/weather-alerts';
-@import './assets/scss/components/weather-alert-dialog';
 @import './assets/scss/components/weather-forecast';
 @import './assets/scss/components/weather-observations';
 @import './assets/scss/components/temperature-graph';
