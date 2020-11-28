@@ -8,6 +8,8 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class WeatherService {
+  private currentWeatherBaseUrl = `${environment.currentWeatherApiUrl}?key=${environment.weatherApiKey}`;
+  private forecastWeatherBaseUrl = `${environment.forecastWeatherApiUrl}?key=${environment.weatherApiKey}`;
 
   constructor(private http: HttpClient) { }
 
@@ -28,7 +30,11 @@ export class WeatherService {
     }
   }
 
+  getWxForecastData(lat, lon, numDays): Observable<any> {
+    return this.http.get(`${this.forecastWeatherBaseUrl}&q=${lat},${lon}&days=${numDays}`);
+  }
+
   getWxObservationsData(lat, lon): Observable<any> {
-    return this.http.get(`${environment.weatherApiUrl}?key=${environment.weatherApiKey}&q=${lat},${lon}`);
+    return this.http.get(`${this.currentWeatherBaseUrl}&q=${lat},${lon}`);
   }
 }

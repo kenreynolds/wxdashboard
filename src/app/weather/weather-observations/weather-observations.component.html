@@ -1,52 +1,60 @@
-<div class="page">
-  <mat-spinner *ngIf="isLoading && !error" diameter="50"></mat-spinner>
-  <div class="weather-observations"
-    [ngClass]="showIsLoading()"
-    *ngIf="hasWxData">
+<mat-spinner *ngIf="isLoading && !error" diameter="50"></mat-spinner>
+<div class="weather"
+  [ngClass]="showIsLoading()"
+  *ngIf="hasWxData">
 
-    <div class="page-header padding-bottom-3 padding-top-2">
-      <div class="date">{{ currentObservations.observationDateTime | date: 'longDate' }}</div>
-      <div class="observation-time">{{ currentObservations.observationDateTime | date: 'shortTime' }}</div>
-      <div class="location">{{ currentObservations.observedLocationName }}, {{ currentObservations.observedRegion }}</div>
-    </div>
-
-    <div class="align-center">
-      <div class="conditions">
-        <i class="wi" [ngClass]="showSkyConditionIcon()"></i>
-        <span class="temperature">
-          {{ currentObservations.observedTemperature }}<i class="wi wi-degrees"></i>
-        </span>
-        <span class="heat-index" *ngIf="hasFeelsLike && isHeatIndex">
-          Heat index: {{ currentObservations.observedFeelsLike }}<i class="wi wi-degrees"></i>
-        </span>
-        <span class="wind-chill" *ngIf="hasFeelsLike && isWindChill">
-          Wind chill: {{ currentObservations.observedFeelsLike }}<i class="wi wi-degrees"></i>
-        </span>
-      </div>
-    </div>
-
-    <!-- Other observations -->
-    <div class="align-center padding-bottom-5 padding-top-2">
-      <div class="other-obs">
-        <span class="type">Humidity:</span>
-        <span class="type">Wind:</span>
-        <span class="type">Pressure:</span>
-      </div>
-      <div class="other-obs">
-        <span class="value">{{ currentObservations.observedHumidity }}</span>
-        <span class="value">{{ currentObservations.observedWindDirection }} {{ currentObservations.observedWindSpeed }}</span>
-        <span class="value">{{ currentObservations.observedPressure }}</span>
-      </div>
-    </div>
-
-    <app-weather-forecast></app-weather-forecast>
+  <div class="row page-header">
+    <div class="date">{{ currentObservations.observationDateTime | date: 'longDate' }}</div>
+    <div class="observation-time">{{ currentObservations.observationDateTime | date: 'shortTime' }}</div>
+    <div class="location">{{ currentObservations.observedLocationName }}, {{ currentObservations.observedRegion }}</div>
   </div>
 
-  <!-- TODO: Remove callout & alert classes and refactor -->
-  <!-- <div class="weather-observations"
-    *ngIf="!hasWxData && error">
-    <div class="callout alert">
-      <p>{{ error }}</p>
+  <div class="row" *ngIf="hasFeelsLike">
+    <div class="feels-like" [ngClass]="showFeelsLike()">
+      Feels like:&nbsp;<span class="bold">{{ currentObservations.observedFeelsLike }}</span><i class="wi wi-degrees"></i>
     </div>
-  </div> -->
+  </div>
+
+  <div class="row conditions">
+    <i class="wi" [ngClass]="showSkyConditionIcon()"></i>
+    <span class="temperature">
+      {{ currentObservations.observedTemperature }}<i class="wi wi-degrees"></i>
+    </span>
+  </div>
+
+  <!-- Other observations -->
+  <div class="row">
+    <div class="col other-obs"
+      *ngIf="hasWxData">
+      <p class="type">
+        Humidity: <span class="value">{{ currentObservations.observedHumidity }}</span>
+      </p>
+      <p class="type">
+        Wind: <span class="value">{{ currentObservations.observedWindDirection }} {{ currentObservations.observedWindSpeed }}</span>
+      </p>
+      <p class="type">
+        Pressure: <span class="value">{{ currentObservations.observedPressure }}</span>
+      </p>
+    </div>
+
+    <div class="col forecast-temperatures"
+      *ngIf="hasWxForecastData">
+      <p class="high">
+        Hi: {{ forecast.highTemperature }}<i class="wi wi-degrees"></i>
+      </p>
+      <p class="low">
+        Lo: {{ forecast.lowTemperature }}<i class="wi wi-degrees"></i>
+      </p>
+    </div>
+  </div>
+
+  <app-weather-forecast></app-weather-forecast>
 </div>
+
+<!-- TODO: Remove callout & alert classes and refactor -->
+<!-- <div class="weather-observations"
+  *ngIf="!hasWxData && error">
+  <div class="callout alert">
+    <p>{{ error }}</p>
+  </div>
+</div> -->

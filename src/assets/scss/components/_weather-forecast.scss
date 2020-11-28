@@ -1,9 +1,21 @@
 .weather-forecast {
   align-items: center;
   display: flex;
-  flex-direction: column;
+  height: 150px;
 
   > .forecast-day {
-    flex-direction: row;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    > .condition,
+    > .high-temp {
+      font-size: 1.1rem;
+    }
+
+    > .high-temp {
+      font-weight: 700;
+    }
   }
 }

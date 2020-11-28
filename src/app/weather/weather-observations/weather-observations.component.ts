@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { CurrentObservations } from '../models/weather';
+import { CurrentObservations, Forecast } from '../models/weather';
 import { WeatherService } from '../services/weather.service';
 
 @Component({
@@ -11,13 +11,16 @@ export class WeatherObservationsComponent implements OnInit {
   /* TODO:
    * Add code to enable selection of another city
    */
+  wxForecast: any = [];
   wxObservations: any = [];
   hasFeelsLike = false;
   isDaytime = false;
 
   currentObservations: CurrentObservations;
+  forecast: Forecast;
   error: string;
   hasWxData: boolean;
+  hasWxForecastData: boolean;
   isHeatIndex: boolean;
   isLoading: boolean;
   isWindChill: boolean;
@@ -26,15 +29,16 @@ export class WeatherObservationsComponent implements OnInit {
 
   ngOnInit() {
     this.isLoading = true;
-    this.getWxObservations();
+    this.getWeatherData();
   }
 
-  getWxObservations(): void {
+  getWeatherData(): void {
     this.weatherService.getCurrentLocation()
       .then(pos => {
         const lat = pos.lat;
         const lon = pos.lon;
 
+        // Current weather conditions
         this.weatherService
           .getWxObservationsData(lat, lon)
           .subscribe(wxObservationData => {
@@ -66,19 +70,7 @@ export class WeatherObservationsComponent implements OnInit {
                 this.isDaytime = true;
               }
 
-              if (this.currentObservations.observedFeelsLike !== this.currentObservations.observedTemperature) {
-                this.hasFeelsLike = true;
-
-                if (this.currentObservations.observedFeelsLike > this.currentObservations.observedTemperature
-                  && this.currentObservations.observedFeelsLike > 80
-                ) {
-                  this.isHeatIndex = true;
-                } else if (this.currentObservations.observedFeelsLike < this.currentObservations.observedTemperature
-                  && this.currentObservations.observedFeelsLike < 40
-                ) {
-                  this.isWindChill = true;
-                }
-              }
+              this.showFeelsLike();
             } else {
               console.log('No weather data to show.');
               this.hasWxData = false;
@@ -88,7 +80,54 @@ export class WeatherObservationsComponent implements OnInit {
             console.log(error);
             this.error = 'Latest observations are currently unavailable.';
           });
+
+        // Forecast weather conditions
+        this.weatherService
+          .getWxForecastData(lat, lon, 1)
+          .subscribe(wxForecastData => {
+            this.wxForecast = wxForecastData;
+
+            if (this.wxForecast) {
+              console.log('Weather forecast data loaded.');
+              const forecastUrl = this.wxForecast.forecast.forecastday[0].day;
+
+              this.hasWxForecastData = true;
+              this.isLoading = false;
+              this.forecast = {
+                highTemperature: Math.floor(forecastUrl.maxtemp_f),
+                lowTemperature: Math.floor(forecastUrl.mintemp_f),
+                skyCondition: forecastUrl.condition.text,
+                chanceOfRain: forecastUrl.daily_chance_of_rain,
+                chanceOfSnow: forecastUrl.daily_chance_of_snow,
+              };
+            } else {
+              console.log('No weather forecast data to show.');
+              this.hasWxForecastData = false;
+              this.isLoading = false;
+            }
+          }, error => {
+              console.log(error);
+              this.error = 'Weather forecast is currently unavailable.';
+          });
       });
+  }
+
+  showFeelsLike() {
+    if (this.currentObservations.observedFeelsLike !== this.currentObservations.observedTemperature) {
+      this.hasFeelsLike = true;
+
+      if (this.currentObservations.observedFeelsLike > this.currentObservations.observedTemperature) {
+        this.isHeatIndex = true;
+        return {
+          'heat-index': true
+        }
+      } else if (this.currentObservations.observedFeelsLike < this.currentObservations.observedTemperature) {
+        this.isWindChill = true;
+        return {
+          'wind-chill': true
+        }
+      }
+    }
   }
 
   showIsLoading() {
@@ -102,6 +141,7 @@ export class WeatherObservationsComponent implements OnInit {
   showSkyConditionIcon() {
     if (this.isDaytime) {
       switch (this.currentObservations.observedSkyCondition) {
+        case 'Clear':
         case 'Sunny':
           return {
             'wi-day-sunny': true
@@ -293,40 +333,4 @@ export class WeatherObservationsComponent implements OnInit {
       }
     }
   }
-
-  /* showHighTempColor() {
-    if (this.shortTermForecast.forecastHighTemperature > 69 && this.shortTermForecast.forecastHighTemperature < 90) {
-      return {
-        'warm': true
-      }
-    } else if (this.shortTermForecast.forecastHighTemperature > 89 && this.shortTermForecast.forecastHighTemperature < 100) {
-      return {
-        'hot': true
-      }
-    } else if (this.shortTermForecast.forecastHighTemperature > 99) {
-      return {
-        'sweltering': true
-      }
-    }
-  }
-
-  showLowTempColor() {
-    if (this.shortTermForecast.forecastLowTemperature > 59 && this.shortTermForecast.forecastLowTemperature < 70) {
-      return {
-        'mild': true
-      }
-    } else if (this.shortTermForecast.forecastLowTemperature > 39 && this.shortTermForecast.forecastLowTemperature < 60) {
-      return {
-        'cool': true
-      }
-    } else if (this.shortTermForecast.forecastLowTemperature > 19 && this.shortTermForecast.forecastLowTemperature < 40) {
-      return {
-        'cold': true
-      }
-    } else if (this.shortTermForecast.forecastLowTemperature < 19) {
-      return {
-        'frigid': true
-      }
-    }
-  } */
 }

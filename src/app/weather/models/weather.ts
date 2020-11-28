@@ -12,10 +12,11 @@ export interface CurrentObservations {
   observationDateTime: number | string;
 }
 
-export interface ShortTermForecast {
-  forecastHighTemperature: number | string;
-  forecastLowTemperature: number | string;
-  shortTermForecastDetails: string;
-  shortTermForecastLowTemperature: number | string;
-  shortTermForecastPeriod: string;
+export interface Forecast {
+  forecastDay?: string;
+  highTemperature: number | string;
+  lowTemperature: number | string;
+  skyCondition: string;
+  chanceOfRain: string;
+  chanceOfSnow: string;
 }

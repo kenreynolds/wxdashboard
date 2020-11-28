@@ -1,5 +1,13 @@
-<div class="weather-forecast padding-top-4">
-  <div class="forecast-day">
-    
+<div class="weather-forecast fixed-bottom">
+  <div class="forecast-day col"
+    *ngFor="let forecast of dailyForecast">
+    <p class="mb-3">{{ forecast.forecastDay | date: 'EEE' }}</p>
+    <i class="wi condition mb-2" [ngClass]="forecast.skyCondition"></i>
+    <p class="high-temp mb-0">
+      {{ forecast.highTemperature | number: '1.0-0' }}<i class="wi wi-degrees"></i>
+    </p>
+    <p class="mb-0">
+      {{ forecast.lowTemperature | number: '1.0-0' }}<i class="wi wi-degrees"></i>
+    </p>
   </div>
 </div>
