@@ -11,7 +11,7 @@
     flex-direction: column;
     padding-left: 0;
     padding-right: 0;
-    padding-top: 2.5rem;
+    padding-top: 1rem;
 
     .wi {
       font-size: 2rem;
@@ -42,17 +42,16 @@
     align-items: center;
     display: flex;
     justify-content: center;
-    width: 100vw;
 
     > .temperature {
-      font-size: 6rem;
+      font-size: 5rem;
       font-weight: 300;
       margin-bottom: 0;
       margin-left: 0.5625rem;
     }
 
     > .wi {
-      font-size: 4.25rem;
+      font-size: 3rem;
       margin-right: 0.5625rem;
       padding-top: 0.5rem;
     }
@@ -67,7 +66,6 @@
     height: 40px;
     justify-content: center;
     margin: 0 1.25rem;
-    margin-top: 4.5rem;
     width: 100%;
 
     &.heat-index,
@@ -103,6 +101,14 @@
     .low {
       color: #2196f3;
     }
+  }
+
+  .main-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    margin-bottom: 150px;
   }
 
   .observation-time {

@@ -6,7 +6,7 @@ import { WeatherService } from '../services/weather.service';
   templateUrl: './weather-forecast.component.html'
 })
 export class WeatherForecastComponent implements OnInit {
-  dailyForecast: any= [];
+  dailyForecast: any = [];
   wxForecast: any = [];
   error: string;
   hasWxForecastData: boolean;
@@ -16,46 +16,59 @@ export class WeatherForecastComponent implements OnInit {
 
   ngOnInit() {
     this.isLoading = true;
-    this.getForecastWeatherData();
+    this.getForecastWeatherData('f');
   }
 
-  getForecastWeatherData() {
+  getForecastWeatherData(tempScale) {
     this.weatherService.getCurrentLocation()
       .then(pos => {
         const lat = pos.lat;
         const lon = pos.lon;
 
-        // 3-day Weather Forecast
+        // 5-day Weather Forecast
         this.weatherService
-          .getWxForecastData(lat, lon, 3)
+          .getWxForecastData(lat, lon, 5)
           .subscribe(wxForecastData => {
             this.wxForecast = wxForecastData;
 
             if (this.wxForecast) {
-              console.log('3-day forecast data loaded.');
+              console.log('5-day forecast data loaded.');
               const forecastUrl = this.wxForecast.forecast.forecastday;
 
               this.hasWxForecastData = true;
               this.isLoading = false;
 
               forecastUrl.forEach(forecast => {
+                let highTemp = '';
+                let lowTemp = '';
+
+                if (tempScale === 'f') {
+                  highTemp = forecast.day.maxtemp_f;
+                  lowTemp = forecast.day.mintemp_f;
+                } else if (tempScale === 'c') {
+                  highTemp = forecast.day.maxtemp_c;
+                  lowTemp = forecast.day.mintemp_c;
+                } else {
+                  console.log('Please provide f or c for temp scale.');
+                }
+
                 this.dailyForecast.push({
                   forecastDay: forecast.date,
-                  highTemperature: forecast.day.maxtemp_f,
-                  lowTemperature: forecast.day.mintemp_f,
+                  highTemperature: highTemp,
+                  lowTemperature: lowTemp,
                   skyCondition: this.setSkyConditionIcon(forecast.day.condition.text),
                   chanceOfRain: forecast.day.daily_chance_of_rain,
                   chanceOfSnow: forecast.day.daily_chance_of_snow
                 });
               });
             } else {
-              console.log('No 3-day forecast data to show.');
+              console.log('No 5-day forecast data to show.');
               this.hasWxForecastData = false;
               this.isLoading = false;
             }
           }, error => {
             console.log(error);
-            this.error = '3-day forecast is currently unavailable.';
+            this.error = '5-day forecast is currently unavailable.';
         });
       });
   }

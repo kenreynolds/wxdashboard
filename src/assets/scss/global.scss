@@ -1,3 +1,7 @@
+.container {
+  max-width: 375px;
+}
+
 .page-header,
 .date,
 .location {
@@ -6,8 +10,8 @@
 
 .page-header {
   flex-direction: column;
-  padding-bottom: 1.75rem;
-  padding-top: 2rem;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
 
   > .date,
   > .location {

@@ -29,10 +29,10 @@ export class WeatherObservationsComponent implements OnInit {
 
   ngOnInit() {
     this.isLoading = true;
-    this.getWeatherData();
+    this.getWeatherData('f');
   }
 
-  getWeatherData(): void {
+  getWeatherData(tempScale): void {
     this.weatherService.getCurrentLocation()
       .then(pos => {
         const lat = pos.lat;
@@ -49,20 +49,32 @@ export class WeatherObservationsComponent implements OnInit {
               console.log('Weather data loaded.');
               const obsLocationUrl = this.wxObservations.location;
               const currentObsUrl = this.wxObservations.current;
+              let feelsLike = '';
+              let currentTemp = '';
+
+              if (tempScale === 'f') {
+                feelsLike = currentObsUrl.feelslike_f;
+                currentTemp = currentObsUrl.temp_f;
+              } else if (tempScale === 'c') {
+                feelsLike = currentObsUrl.feelslike_c;
+                currentTemp = currentObsUrl.temp_c;
+              } else {
+                console.log('Please provide f or c for temp scale.');
+              }
 
               this.hasWxData = true;
               this.isLoading = false;
               this.currentObservations = {
-                observedFeelsLike: Math.floor(currentObsUrl.feelslike_f),
+                observedFeelsLike: feelsLike,
                 observedHumidity: `${currentObsUrl.humidity}%`,
                 observedLocationName: obsLocationUrl.name,
                 observedPressure: `${currentObsUrl.pressure_mb} mb`,
                 observedRegion: obsLocationUrl.region,
                 observedSkyCondition: currentObsUrl.condition.text,
-                observedTemperature: Math.floor(currentObsUrl.temp_f),
+                observedTemperature: currentTemp,
                 observedVisibility: `${currentObsUrl.vis_miles} miles`,
                 observedWindDirection: currentObsUrl.wind_dir,
-                observedWindSpeed: `${Math.floor(currentObsUrl.wind_mph)} mph`,
+                observedWindSpeed: `${currentObsUrl.wind_mph} mph`,
                 observationDateTime: obsLocationUrl.localtime,
               }
 
@@ -90,12 +102,24 @@ export class WeatherObservationsComponent implements OnInit {
             if (this.wxForecast) {
               console.log('Weather forecast data loaded.');
               const forecastUrl = this.wxForecast.forecast.forecastday[0].day;
+              let highTemp = '';
+              let lowTemp = '';
+
+              if (tempScale === 'f') {
+                highTemp = forecastUrl.maxtemp_f;
+                lowTemp = forecastUrl.mintemp_f;
+              } else if (tempScale === 'c') {
+                highTemp = forecastUrl.maxtemp_c;
+                lowTemp = forecastUrl.mintemp_c;
+              } else {
+                console.log('Please provide f or c for temp scale.');
+              }
 
               this.hasWxForecastData = true;
               this.isLoading = false;
               this.forecast = {
-                highTemperature: Math.floor(forecastUrl.maxtemp_f),
-                lowTemperature: Math.floor(forecastUrl.mintemp_f),
+                highTemperature: highTemp,
+                lowTemperature: lowTemp,
                 skyCondition: forecastUrl.condition.text,
                 chanceOfRain: forecastUrl.daily_chance_of_rain,
                 chanceOfSnow: forecastUrl.daily_chance_of_snow,
@@ -145,6 +169,10 @@ export class WeatherObservationsComponent implements OnInit {
         case 'Sunny':
           return {
             'wi-day-sunny': true
+          };
+        case 'Partly cloudy':
+          return {
+            'wi-day-sunny-overcast': true
           };
           case 'Cloudy':
             return {

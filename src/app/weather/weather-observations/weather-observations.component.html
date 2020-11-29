@@ -9,42 +9,44 @@
     <div class="location">{{ currentObservations.observedLocationName }}, {{ currentObservations.observedRegion }}</div>
   </div>
 
-  <div class="row" *ngIf="hasFeelsLike">
-    <div class="feels-like" [ngClass]="showFeelsLike()">
-      Feels like:&nbsp;<span class="bold">{{ currentObservations.observedFeelsLike }}</span><i class="wi wi-degrees"></i>
-    </div>
-  </div>
-
-  <div class="row conditions">
-    <i class="wi" [ngClass]="showSkyConditionIcon()"></i>
-    <span class="temperature">
-      {{ currentObservations.observedTemperature }}<i class="wi wi-degrees"></i>
-    </span>
-  </div>
-
-  <!-- Other observations -->
-  <div class="row">
-    <div class="col other-obs"
-      *ngIf="hasWxData">
-      <p class="type">
-        Humidity: <span class="value">{{ currentObservations.observedHumidity }}</span>
-      </p>
-      <p class="type">
-        Wind: <span class="value">{{ currentObservations.observedWindDirection }} {{ currentObservations.observedWindSpeed }}</span>
-      </p>
-      <p class="type">
-        Pressure: <span class="value">{{ currentObservations.observedPressure }}</span>
-      </p>
+  <div class="main-panel">
+    <div class="row" *ngIf="hasFeelsLike">
+      <div class="feels-like" [ngClass]="showFeelsLike()">
+        Feels like:&nbsp;<span class="bold">{{ currentObservations.observedFeelsLike | number: '1.0-0' }}</span><i class="wi wi-degrees"></i>
+      </div>
     </div>
 
-    <div class="col forecast-temperatures"
-      *ngIf="hasWxForecastData">
-      <p class="high">
-        Hi: {{ forecast.highTemperature }}<i class="wi wi-degrees"></i>
-      </p>
-      <p class="low">
-        Lo: {{ forecast.lowTemperature }}<i class="wi wi-degrees"></i>
-      </p>
+    <div class="row conditions">
+      <i class="wi" [ngClass]="showSkyConditionIcon()"></i>
+      <span class="temperature">
+        {{ currentObservations.observedTemperature | number: '1.0-0' }}<i class="wi wi-degrees"></i>
+      </span>
+    </div>
+
+    <!-- Other observations -->
+    <div class="row">
+      <div class="col other-obs"
+        *ngIf="hasWxData">
+        <p class="type">
+          Humidity: <span class="value">{{ currentObservations.observedHumidity }}</span>
+        </p>
+        <p class="type">
+          Wind: <span class="value">{{ currentObservations.observedWindDirection }} {{ currentObservations.observedWindSpeed | number: '1.0-0' }}</span>
+        </p>
+        <p class="type">
+          Pressure: <span class="value">{{ currentObservations.observedPressure }}</span>
+        </p>
+      </div>
+
+      <div class="col forecast-temperatures"
+        *ngIf="hasWxForecastData">
+        <p class="high">
+          Hi: {{ forecast.highTemperature | number: '1.0-0' }}<i class="wi wi-degrees"></i>
+        </p>
+        <p class="low">
+          Lo: {{ forecast.lowTemperature | number: '1.0-0' }}<i class="wi wi-degrees"></i>
+        </p>
+      </div>
     </div>
   </div>
 
