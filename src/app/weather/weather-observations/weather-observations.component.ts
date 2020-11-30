@@ -74,7 +74,7 @@ export class WeatherObservationsComponent implements OnInit {
                 observedTemperature: currentTemp,
                 observedVisibility: `${currentObsUrl.vis_miles} miles`,
                 observedWindDirection: currentObsUrl.wind_dir,
-                observedWindSpeed: `${currentObsUrl.wind_mph} mph`,
+                observedWindSpeed: currentObsUrl.wind_mph,
                 observationDateTime: obsLocationUrl.localtime,
               }
 

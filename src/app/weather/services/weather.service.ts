@@ -2,14 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { environment } from '../../../environments/environment';
-
 @Injectable({
   providedIn: 'root'
 })
 export class WeatherService {
-  private currentWeatherBaseUrl = `${environment.currentWeatherApiUrl}?key=${environment.weatherApiKey}`;
-  private forecastWeatherBaseUrl = `${environment.forecastWeatherApiUrl}?key=${environment.weatherApiKey}`;
+  private weatherApiKey = 'd1339026b3444f9390104039201811';
+  private currentWeatherApiUrl = `http://api.weatherapi.com/v1/current.json?key=${this.weatherApiKey}`;
+  private forecastWeatherApiUrl = `http://api.weatherapi.com/v1/forecast.json?key=${this.weatherApiKey}`;
 
   constructor(private http: HttpClient) { }
 
@@ -31,10 +30,10 @@ export class WeatherService {
   }
 
   getWxForecastData(lat, lon, numDays): Observable<any> {
-    return this.http.get(`${this.forecastWeatherBaseUrl}&q=${lat},${lon}&days=${numDays}`);
+    return this.http.get(`${this.forecastWeatherApiUrl}&q=${lat},${lon}&days=${numDays}`);
   }
 
   getWxObservationsData(lat, lon): Observable<any> {
-    return this.http.get(`${this.currentWeatherBaseUrl}&q=${lat},${lon}`);
+    return this.http.get(`${this.currentWeatherApiUrl}&q=${lat},${lon}`);
   }
 }
