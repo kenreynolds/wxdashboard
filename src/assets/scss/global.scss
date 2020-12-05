@@ -3,7 +3,7 @@
 }
 
 .page-header {
-  flex-direction: column;
+  display: block !important;
   padding: 1rem 15px;
 
   > .date-time {
