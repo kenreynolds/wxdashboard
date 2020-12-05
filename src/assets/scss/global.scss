@@ -2,21 +2,8 @@
   max-width: 375px;
 }
 
-.page-header,
-.date-time,
-.location {
-  display: flex;
-}
-
 .page-header {
-  flex-direction: column;
-  padding-bottom: 1rem;
-  padding-top: 1rem;
-
-  > .date-time
-  > .location {
-    justify-content: center;
-  }
+  padding: 1rem 15px;
 
   > .date-time {
     font-size: 1.25rem;
