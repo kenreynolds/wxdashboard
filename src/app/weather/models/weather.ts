@@ -9,7 +9,7 @@ export interface CurrentObservations {
   observedVisibility: number | string;
   observedWindDirection: string;
   observedWindSpeed: number | string;
-  observationDateTime: number | string;
+  observationDateTime: string;
 }
 
 export interface Forecast {

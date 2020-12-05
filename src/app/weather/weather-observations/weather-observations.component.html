@@ -4,7 +4,7 @@
   *ngIf="hasWxData">
 
   <div class="row page-header">
-    <p class="date-time mb-0">{{ currentObservations.observationDateTime | date: 'MMM d y, h:mm a' }}</p>
+    <p class="date-time mb-0">{{ currentObservations.observationDateTime }}</p>
     <p class="location">{{ currentObservations.observedLocationName }}, {{ currentObservations.observedRegion }}</p>
   </div>
 

@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { CurrentObservations, Forecast } from '../models/weather';
 import { WeatherService } from '../services/weather.service';
 
+import * as dayjs from 'dayjs';
+
 @Component({
   selector: 'app-weather-observations',
   templateUrl: './weather-observations.component.html'
@@ -75,7 +77,7 @@ export class WeatherObservationsComponent implements OnInit {
                 observedVisibility: `${currentObsUrl.vis_miles} miles`,
                 observedWindDirection: currentObsUrl.wind_dir,
                 observedWindSpeed: currentObsUrl.wind_mph,
-                observationDateTime: obsLocationUrl.localtime,
+                observationDateTime: dayjs(obsLocationUrl.localtime).format('ddd. MMM D, YYYY, h:mm A'),
               }
 
               if (currentObsUrl.is_day === 1) {
