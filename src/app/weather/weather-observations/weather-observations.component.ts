@@ -10,9 +10,6 @@ import * as dayjs from 'dayjs';
   templateUrl: './weather-observations.component.html'
 })
 export class WeatherObservationsComponent implements OnInit {
-  /* TODO:
-   * Add code to enable selection of another city
-   */
   wxForecast: any = [];
   wxObservations: any = [];
   hasFeelsLike = false;
@@ -55,11 +52,11 @@ export class WeatherObservationsComponent implements OnInit {
               let currentTemp = '';
 
               if (tempScale === 'f') {
-                feelsLike = currentObsUrl.feelslike_f;
-                currentTemp = currentObsUrl.temp_f;
+                feelsLike = Math.round(currentObsUrl.feelslike_f).toString();
+                currentTemp = Math.round(currentObsUrl.temp_f).toString();
               } else if (tempScale === 'c') {
-                feelsLike = currentObsUrl.feelslike_c;
-                currentTemp = currentObsUrl.temp_c;
+                feelsLike = Math.round(currentObsUrl.feelslike_c).toString();
+                currentTemp = Math.round(currentObsUrl.temp_c).toString();
               } else {
                 console.log('Please provide f or c for temp scale.');
               }
@@ -108,11 +105,11 @@ export class WeatherObservationsComponent implements OnInit {
               let lowTemp = '';
 
               if (tempScale === 'f') {
-                highTemp = forecastUrl.maxtemp_f;
-                lowTemp = forecastUrl.mintemp_f;
+                highTemp = Math.round(forecastUrl.maxtemp_f).toString();
+                lowTemp = Math.round(forecastUrl.mintemp_f).toString();
               } else if (tempScale === 'c') {
-                highTemp = forecastUrl.maxtemp_c;
-                lowTemp = forecastUrl.mintemp_c;
+                highTemp = Math.round(forecastUrl.maxtemp_c).toString();
+                lowTemp = Math.round(forecastUrl.mintemp_c).toString();
               } else {
                 console.log('Please provide f or c for temp scale.');
               }
@@ -140,14 +137,20 @@ export class WeatherObservationsComponent implements OnInit {
 
   showFeelsLike() {
     if (this.currentObservations.observedFeelsLike !== this.currentObservations.observedTemperature) {
-      this.hasFeelsLike = true;
-
-      if (this.currentObservations.observedFeelsLike > this.currentObservations.observedTemperature) {
+      if (
+        this.currentObservations.observedFeelsLike > this.currentObservations.observedTemperature &&
+        this.currentObservations.observedFeelsLike > '80'
+      ) {
+        this.hasFeelsLike = true;
         this.isHeatIndex = true;
         return {
           'heat-index': true
         }
-      } else if (this.currentObservations.observedFeelsLike < this.currentObservations.observedTemperature) {
+      } else if (
+        this.currentObservations.observedFeelsLike < this.currentObservations.observedTemperature &&
+        this.currentObservations.observedFeelsLike < '50'
+      ) {
+        this.hasFeelsLike = true;
         this.isWindChill = true;
         return {
           'wind-chill': true

@@ -11,14 +11,14 @@
   <div class="main-panel">
     <div class="row" *ngIf="hasFeelsLike">
       <div class="feels-like" [ngClass]="showFeelsLike()">
-        Feels like:&nbsp;<span class="bold">{{ currentObservations.observedFeelsLike | number: '1.0-0' }}</span><i class="wi wi-degrees"></i>
+        Feels like:&nbsp;<span class="bold">{{ currentObservations.observedFeelsLike }}</span><i class="wi wi-degrees"></i>
       </div>
     </div>
 
     <div class="row conditions">
       <i class="wi" [ngClass]="showSkyConditionIcon()"></i>
       <span class="temperature">
-        {{ currentObservations.observedTemperature | number: '1.0-0' }}<i class="wi wi-degrees"></i>
+        {{ currentObservations.observedTemperature }}<i class="wi wi-degrees"></i>
       </span>
     </div>
 
@@ -40,10 +40,10 @@
       <div class="col forecast-temperatures"
         *ngIf="hasWxForecastData">
         <p class="high">
-          Hi: {{ forecast.highTemperature | number: '1.0-0' }}<i class="wi wi-degrees"></i>
+          Hi: {{ forecast.highTemperature }}<i class="wi wi-degrees"></i>
         </p>
         <p class="low">
-          Lo: {{ forecast.lowTemperature | number: '1.0-0' }}<i class="wi wi-degrees"></i>
+          Lo: {{ forecast.lowTemperature }}<i class="wi wi-degrees"></i>
         </p>
       </div>
     </div>
